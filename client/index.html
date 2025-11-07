@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+
+   ███╗   ██╗██╗ ██████╗███████╗    ██╗   ██╗ ██████╗ ██╗   ██╗     ██████╗██╗  ██╗███████╗ ██████╗██╗  ██╗███████╗██████╗
+   ████╗  ██║██║██╔════╝██╔════╝    ╚██╗ ██╔╝██╔═══██╗██║   ██║    ██╔════╝██║  ██║██╔════╝██╔════╝██║ ██╔╝██╔════╝██╔══██╗
+   ██╔██╗ ██║██║██║     █████╗       ╚████╔╝ ██║   ██║██║   ██║    ██║     ███████║█████╗  ██║     █████╔╝ █████╗  ██║  ██║
+   ██║╚██╗██║██║██║     ██╔══╝        ╚██╔╝  ██║   ██║██║   ██║    ██║     ██╔══██║██╔══╝  ██║     ██╔═██╗ ██╔══╝  ██║  ██║
+   ██║ ╚████║██║╚██████╗███████╗       ██║   ╚██████╔╝╚██████╔╝    ╚██████╗██║  ██║███████╗╚██████╗██║  ██╗███████╗██████╔╝
+   ╚═╝  ╚═══╝╚═╝ ╚═════╝╚══════╝       ╚═╝    ╚═════╝  ╚═════╝      ╚═════╝╚═╝  ╚═╝╚══════╝ ╚═════╝╚═╝  ╚═╝╚══════╝╚═════╝
+
+   ████████╗██╗  ██╗███████╗    ███████╗ ██████╗ ██╗   ██╗██████╗  ██████╗███████╗██╗
+   ╚══██╔══╝██║  ██║██╔════╝    ██╔════╝██╔═══██╗██║   ██║██╔══██╗██╔════╝██╔════╝██║
+      ██║   ███████║█████╗      ███████╗██║   ██║██║   ██║██████╔╝██║     █████╗  ██║
+      ██║   ██╔══██║██╔══╝      ╚════██║██║   ██║██║   ██║██╔══██╗██║     ██╔══╝  ╚═╝
+      ██║   ██║  ██║███████╗    ███████║╚██████╔╝╚██████╔╝██║  ██║╚██████╗███████╗██╗
+      ╚═╝   ╚═╝  ╚═╝╚══════╝    ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝ ╚═════╝╚══════╝╚═╝
+
+   Thanks for checking out the source code! 🎉
+
+   If you're reading this, you're probably a curious developer like me.
+   Feel free to reach out:
+   📧 Email: kunerrrs@gmail.com
+   💼 LinkedIn: https://www.linkedin.com/in/gregory-kun-73809b172/
+   🐙 GitHub: https://github.com/kunerrs
+
+   Built with ❤️ using Alpine.js and Tailwind CSS
+
+-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gregory Kun - Web Developer Portfolio</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
+
+    <!-- DOMPurify for XSS Protection -->
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
+
+    <!-- Alpine.js Data (must load before Alpine.js) -->
+    <script src="/js/alpine-data.js"></script>
+
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- External Styles -->
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300 flex flex-col lg:flex-row" x-data="portfolioData">
+
+    <!-- Main Content (3/4 width on desktop, full width on mobile) -->
+    <div class="w-full lg:w-3/4">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full lg:w-3/4 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md shadow-sm z-50 transition-colors duration-300">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0">
+                    <button @click="toggleDarkMode" class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
+                        <svg x-show="!darkMode" class="w-6 h-6 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                        </svg>
+                        <svg x-show="darkMode" class="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                        <span x-show="!darkMode" class="text-sm text-gray-600 dark:text-gray-300">Dark Mode</span>
+                        <span x-show="darkMode" class="text-sm text-gray-300">Light Mode</span>
+                    </button>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex space-x-8">
+                    <a @click="scrollToSection('about')"
+                       :class="activeSection === 'about' ? 'text-blue-600 dark:text-blue-400 font-semibold border-b-2 border-blue-600 dark:border-blue-400' : 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 border-b-2 border-transparent'"
+                       class="cursor-pointer transition-all duration-200 pb-1">About</a>
+                    <a @click="scrollToSection('projects')"
+                       :class="activeSection === 'projects' ? 'text-blue-600 dark:text-blue-400 font-semibold border-b-2 border-blue-600 dark:border-blue-400' : 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 border-b-2 border-transparent'"
+                       class="cursor-pointer transition-all duration-200 pb-1">Projects</a>
+                    <a @click="scrollToSection('experience')"
+                       :class="activeSection === 'experience' ? 'text-blue-600 dark:text-blue-400 font-semibold border-b-2 border-blue-600 dark:border-blue-400' : 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 border-b-2 border-transparent'"
+                       class="cursor-pointer transition-all duration-200 pb-1">Experience</a>
+                    <a @click="scrollToSection('skills')"
+                       :class="activeSection === 'skills' ? 'text-blue-600 dark:text-blue-400 font-semibold border-b-2 border-blue-600 dark:border-blue-400' : 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 border-b-2 border-transparent'"
+                       class="cursor-pointer transition-all duration-200 pb-1">Skills</a>
+                    <a @click="scrollToSection('education')"
+                       :class="activeSection === 'education' ? 'text-blue-600 dark:text-blue-400 font-semibold border-b-2 border-blue-600 dark:border-blue-400' : 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 border-b-2 border-transparent'"
+                       class="cursor-pointer transition-all duration-200 pb-1">Education</a>
+                    <a @click="scrollToSection('contact')"
+                       :class="activeSection === 'contact' ? 'text-blue-600 dark:text-blue-400 font-semibold border-b-2 border-blue-600 dark:border-blue-400' : 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 border-b-2 border-transparent'"
+                       class="cursor-pointer transition-all duration-200 pb-1">Contact</a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path x-show="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                            <path x-show="mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Navigation -->
+            <div x-show="mobileMenuOpen"
+                 x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="opacity-0 transform scale-95"
+                 x-transition:enter-end="opacity-100 transform scale-100"
+                 x-transition:leave="transition ease-in duration-150"
+                 x-transition:leave-start="opacity-100 transform scale-100"
+                 x-transition:leave-end="opacity-0 transform scale-95"
+                 class="md:hidden pb-4">
+                <a @click="scrollToSection('about')"
+                   :class="activeSection === 'about' ? 'text-blue-600 dark:text-blue-400 font-semibold bg-blue-50 dark:bg-blue-900/20' : 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'"
+                   class="block py-2 px-4 rounded-md transition-all duration-200 cursor-pointer">About</a>
+                <a @click="scrollToSection('projects')"
+                   :class="activeSection === 'projects' ? 'text-blue-600 dark:text-blue-400 font-semibold bg-blue-50 dark:bg-blue-900/20' : 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'"
+                   class="block py-2 px-4 rounded-md transition-all duration-200 cursor-pointer">Projects</a>
+                <a @click="scrollToSection('experience')"
+                   :class="activeSection === 'experience' ? 'text-blue-600 dark:text-blue-400 font-semibold bg-blue-50 dark:bg-blue-900/20' : 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'"
+                   class="block py-2 px-4 rounded-md transition-all duration-200 cursor-pointer">Experience</a>
+                <a @click="scrollToSection('skills')"
+                   :class="activeSection === 'skills' ? 'text-blue-600 dark:text-blue-400 font-semibold bg-blue-50 dark:bg-blue-900/20' : 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'"
+                   class="block py-2 px-4 rounded-md transition-all duration-200 cursor-pointer">Skills</a>
+                <a @click="scrollToSection('education')"
+                   :class="activeSection === 'education' ? 'text-blue-600 dark:text-blue-400 font-semibold bg-blue-50 dark:bg-blue-900/20' : 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'"
+                   class="block py-2 px-4 rounded-md transition-all duration-200 cursor-pointer">Education</a>
+                <a @click="scrollToSection('contact')"
+                   :class="activeSection === 'contact' ? 'text-blue-600 dark:text-blue-400 font-semibold bg-blue-50 dark:bg-blue-900/20' : 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'"
+                   class="block py-2 px-4 rounded-md transition-all duration-200 cursor-pointer">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="about" class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 relative">
+        <!-- Particles Background -->
+        <div class="particles-container">
+            <div class="particle" style="left: 10%; width: 8px; height: 8px; animation-duration: 15s; animation-delay: 0s;"></div>
+            <div class="particle" style="left: 20%; width: 11px; height: 11px; animation-duration: 20s; animation-delay: 2s;"></div>
+            <div class="particle" style="left: 30%; width: 6px; height: 6px; animation-duration: 18s; animation-delay: 4s;"></div>
+            <div class="particle" style="left: 40%; width: 10px; height: 10px; animation-duration: 22s; animation-delay: 1s;"></div>
+            <div class="particle" style="left: 50%; width: 7px; height: 7px; animation-duration: 17s; animation-delay: 3s;"></div>
+            <div class="particle" style="left: 60%; width: 12px; height: 12px; animation-duration: 19s; animation-delay: 5s;"></div>
+            <div class="particle" style="left: 70%; width: 5px; height: 5px; animation-duration: 21s; animation-delay: 2s;"></div>
+            <div class="particle" style="left: 80%; width: 9px; height: 9px; animation-duration: 16s; animation-delay: 4s;"></div>
+            <div class="particle" style="left: 90%; width: 7px; height: 7px; animation-duration: 23s; animation-delay: 1s;"></div>
+            <div class="particle" style="left: 15%; width: 6px; height: 6px; animation-duration: 20s; animation-delay: 6s;"></div>
+            <div class="particle" style="left: 25%; width: 10px; height: 10px; animation-duration: 18s; animation-delay: 3s;"></div>
+            <div class="particle" style="left: 35%; width: 8px; height: 8px; animation-duration: 19s; animation-delay: 5s;"></div>
+            <div class="particle" style="left: 45%; width: 11px; height: 11px; animation-duration: 21s; animation-delay: 2s;"></div>
+            <div class="particle" style="left: 55%; width: 5px; height: 5px; animation-duration: 17s; animation-delay: 4s;"></div>
+            <div class="particle" style="left: 65%; width: 9px; height: 9px; animation-duration: 22s; animation-delay: 1s;"></div>
+            <div class="particle" style="left: 75%; width: 7px; height: 7px; animation-duration: 16s; animation-delay: 6s;"></div>
+            <div class="particle" style="left: 85%; width: 6px; height: 6px; animation-duration: 20s; animation-delay: 3s;"></div>
+            <div class="particle" style="left: 95%; width: 10px; height: 10px; animation-duration: 18s; animation-delay: 5s;"></div>
+        </div>
+
+        <div class="max-w-6xl mx-auto relative z-10">
+            <div class="text-center section-fade">
+                <div class="mb-6 flex justify-center">
+                    <div class="relative w-32 h-32 rounded-full overflow-hidden shadow-lg profile-pic-container">
+                        <img src="assets/sg.jpeg" alt="Gregory Kun" class="w-full h-full rounded-full object-cover absolute inset-0 transition-opacity duration-500 ease-in-out profile-pic-default">
+                        <img src="assets/sg-2.png" alt="Gregory Kun" class="w-full h-full rounded-full object-cover absolute inset-0 transition-opacity duration-500 ease-in-out opacity-0 profile-pic-hover">
+                    </div>
+                </div>
+                <h1 class="text-5xl sm:text-6xl font-bold mb-4">
+                    <span class="gradient-text tracking-wide">Gregory Kun</span>
+                </h1>
+                <p class="text-sm uppercase text-gray-600 mb-6 tracking-widest leading-relaxed">Web Developer </p>
+                <p class="text-md font-thin  text-gray-500 mb-8">
+                    <svg class="inline w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    Born in <b> Baguio, Philippines </b>  | Currently lives in <b> Hamilton, ON, Canada </b>
+                </p>
+                <div class="max-w-3xl mx-auto mb-10">
+                    <p class="text-lg text-gray-700 leading-relaxed">
+                        Web developer with experience in both back-end and front-end development, including HTML, CSS, and JavaScript.
+                        Passionate about creating engaging interfaces that deliver seamless user experiences.
+                        Continuously learning and adapting to new technologies is a top priority.
+                    </p>
+                </div>
+                <div class="flex flex-wrap justify-center gap-4 mb-8">
+                    <a href="mailto:kunerrrs@gmail.com"
+                       class="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                        Send an Email
+                    </a>
+                    <a href="assets/Gregory_Kun_Resume.pdf"
+                       download
+                       class="inline-flex items-center px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-200">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        Download Resume
+                    </a>
+                </div>
+
+                <!-- Social Links -->
+                <div class="flex justify-center gap-4">
+                    <a href="https://www.linkedin.com/in/gregory-kun-73809b172/" target="_blank" class="p-3 rounded-lg hover:bg-blue-600 hover:text-white transition-all duration-200 text-gray-600 dark:text-gray-300">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                    </a>
+                    <a href="https://github.com/kunerrs" target="_blank" class="p-3 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-600 hover:text-white transition-all duration-200 text-gray-600 dark:text-gray-300">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                    </a>
+                    <a href="https://www.facebook.com/kunerrs/" target="_blank" class="p-3 rounded-lg hover:bg-blue-500 hover:text-white transition-all duration-200 text-gray-600 dark:text-gray-300">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-zinc-900">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl font-bold mb-4 text-center">
+                <span class="gradient-text">Featured Projects</span>
+            </h2>
+            <p class="text-center text-gray-600 dark:text-gray-400 mb-12 max-w-2xl mx-auto">
+                Here are some of my recent projects showcasing my skills in web development.
+            </p>
+
+            <!-- Carousel Container -->
+            <div class="relative">
+                <!-- Carousel -->
+                <div class="flex items-center justify-center gap-4">
+                    <!-- Previous Button -->
+                    <button @click="prevProject"
+                            class="flex-shrink-0 p-3 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200 z-10">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                    </button>
+
+                    <!-- Projects Display -->
+                    <div class="flex items-center justify-center gap-4 overflow-hidden w-full max-w-5xl">
+                        <!-- Left Side Project (Faded) -->
+                        <div class="hidden lg:block w-64 opacity-30 transform scale-90 transition-all duration-300">
+                            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden shadow-sm">
+                                <div class="aspect-video bg-gray-200 dark:bg-gray-600">
+                                    <img :src="projects[getProjectIndex(-1)].image"
+                                         :alt="projects[getProjectIndex(-1)].title"
+                                         class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Center Project (Active) -->
+                        <div class="w-full max-w-md">
+                            <div :class="isSliding ? (slideDirection === 'right' ? 'project-slide-right' : 'project-slide-left') : ''"
+                                 class="bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden shadow-lg">
+                                <div class="aspect-video bg-gray-200 dark:bg-gray-600">
+                                    <img :src="projects[currentProject].image"
+                                         :alt="projects[currentProject].title"
+                                         class="w-full h-full object-cover">
+                                </div>
+                                <div class="p-6">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <h3 class="text-2xl font-semibold dark:text-white" x-text="projects[currentProject].title"></h3>
+                                        <a :href="projects[currentProject].demo"
+                                           target="_blank"
+                                           class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors duration-200">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                    <p class="hidden md:block text-gray-600 dark:text-gray-300 mb-4" x-text="projects[currentProject].description"></p>
+                                    <div class="flex flex-wrap gap-2">
+                                        <template x-for="tag in projects[currentProject].tags" :key="tag">
+                                            <span class="px-3 py-1 rounded-full text-sm"
+                                                  :class="{
+                                                      'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300': projects[currentProject].tagColor === 'blue',
+                                                      'bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300': projects[currentProject].tagColor === 'purple',
+                                                      'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300': projects[currentProject].tagColor === 'green'
+                                                  }"
+                                                  x-text="tag"></span>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Side Project (Faded) -->
+                        <div class="hidden lg:block w-64 opacity-30 transform scale-90 transition-all duration-300">
+                            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden shadow-sm">
+                                <div class="aspect-video bg-gray-200 dark:bg-gray-600">
+                                    <img :src="projects[getProjectIndex(1)].image"
+                                         :alt="projects[getProjectIndex(1)].title"
+                                         class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Next Button -->
+                    <button @click="nextProject"
+                            class="flex-shrink-0 p-3 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200 z-10">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Carousel Indicators -->
+                <div class="flex justify-center gap-2 mt-8">
+                    <template x-for="(project, index) in projects" :key="index">
+                        <button @click="currentProject = index"
+                                class="w-2 h-2 rounded-full transition-all duration-300"
+                                :class="currentProject === index ? 'bg-blue-600 w-8' : 'bg-gray-300 dark:bg-gray-600'"></button>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl font-bold mb-8 text-center">
+                <span class="gradient-text">Experience</span>
+            </h2>
+
+            <!-- Tabs -->
+            <div class="flex justify-center mb-8">
+                <div class="inline-flex rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-zinc-900 p-1">
+                    <button @click="experienceTab = 'professional'"
+                            :class="experienceTab === 'professional' ? 'bg-white dark:bg-gray-700 shadow-sm' : 'hover:bg-gray-100 dark:hover:bg-gray-700'"
+                            class="px-6 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                        Professional Experience
+                    </button>
+                    <button @click="experienceTab = 'other'"
+                            :class="experienceTab === 'other' ? 'bg-white dark:bg-gray-700 shadow-sm' : 'hover:bg-gray-100 dark:hover:bg-gray-700'"
+                            class="px-6 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                        Other Experience
+                    </button>
+                </div>
+            </div>
+
+            <!-- Professional Experience Tab -->
+            <div x-show="experienceTab === 'professional'" class="space-y-8">
+                <!-- Job 1 -->
+                <div class="border-l-4 border-blue-600 pl-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200 rounded-r-lg">
+                    <h3 class="text-2xl font-semibold mb-2">Full Stack Web Developer</h3>
+                    <p class="text-blue-600 font-medium mb-1">
+                        PRO PCO
+                        <a href="https://apps.propco.services/propco/login" target="_blank" class="inline-flex items-center ml-2 text-sm text-gray-500 hover:text-blue-600">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                            </svg>
+                        </a>
+                    </p>
+                    <p class="text-gray-500 mb-4">May 2025 - Oct 2025 • 6 months Contract (Currently on call for maintenance)</p>
+                    <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Worked on updating and maintaining the company's Content Management System (CMS)
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Developed web applications using CodeIgniter framework and Bootstrap for responsive design
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Updated the UI to a more modern look with Bootstrap and developed mobile view for technicians
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Developed the Accounting Section (Invoicing and Billing) for office staff
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Managed MySQL database operations and optimization
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Fixed system issues and bugs to ensure smooth operations
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Managed server deployment and maintenance operations
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Job 2 -->
+                <div class="border-l-4 border-blue-600 pl-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200 rounded-r-lg">
+                    <h3 class="text-2xl font-semibold mb-2">Web Developer</h3>
+                    <p class="text-blue-600 font-medium mb-1">
+                        eFlexervices Inc.
+                        <a href="https://aqqire.com" target="_blank" class="inline-flex items-center ml-2 text-sm text-gray-500 hover:text-blue-600">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                            </svg>
+                        </a>
+                    </p>
+                    <p class="text-gray-500 mb-4">Feb 2021 - Dec 2023</p>
+                    <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Maintained the existing website and ensured consistency and maintainability of the codebase
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Designed and developed RESTful APIs using Adonis JavaScript and Vue.js
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Worked on the database of web applications using PostgreSQL, MySQL and MongoDB
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Developed functions and triggers on PostgreSQL
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Designed and developed front-end web applications with Vue 3 - Composition API
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Designed overall design of the web applications with Tailwind CSS, Vuetify and Bootstrap
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Job 3 -->
+                <div class="border-l-4 border-blue-600 pl-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200 rounded-r-lg">
+                    <h3 class="text-2xl font-semibold mb-2">Shopify Developer</h3>
+                    <p class="text-blue-600 font-medium mb-1">
+                        CTOAN Labs
+                        <span class="ml-2 text-sm text-gray-500">
+                            (customportrait.com - discontinued, couchskins.com)
+                        </span>
+                    </p>
+                    <p class="text-gray-500 mb-4">Dec 2020 - Feb 2021</p>
+                    <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Enhanced and customized Shopify themes to align with brand aesthetics and improve user experience
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Integrated third-party apps and plugins to extend functionality and optimize store operations
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Developed custom Shopify apps using Shopify's Liquid templating language and the Shopify API
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Other Experience Tab -->
+            <div x-show="experienceTab === 'other'" class="space-y-8">
+                <!-- CNC Operator -->
+                <div class="border-l-4 border-purple-600 pl-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200 rounded-r-lg">
+                    <h3 class="text-2xl font-semibold mb-2">CNC Operator</h3>
+                    <p class="text-purple-600 font-medium mb-1">Orlick Industries</p>
+                    <p class="text-gray-500 mb-4">October 2024 - May 2025 • Hamilton, ON</p>
+                    <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Operate and monitor CNC machines to perform precision manufacturing tasks
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Inspect finished products to ensure they meet specifications using measurement tools
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Maintain clean and organized workstations in compliance with safety standards
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Collaborate with team members to optimize production efficiency
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Set up machines, load raw materials, and input production instructions or blueprints
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Machine Operator -->
+                <div class="border-l-4 border-purple-600 pl-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200 rounded-r-lg">
+                    <h3 class="text-2xl font-semibold mb-2">Machine Operator</h3>
+                    <p class="text-purple-600 font-medium mb-1">Numesh Ontario Inc.</p>
+                    <p class="text-gray-500 mb-4">April 2024 - September 2024 • Brantford, ON</p>
+                    <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Operated and monitored mesh manufacturing machines, ensuring consistent production quality and adherence to specifications
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Set up, calibrated, and adjusted machines according to production requirements and material specifications
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Conducted regular maintenance and troubleshooting of equipment to minimize downtime
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Followed safety protocols and adhered to workplace safety regulations, including WHMIS standards
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Maintained accurate production records and logs
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Assisted in training new operators on machine operations, safety procedures, and quality standards
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Line Operator -->
+                <div class="border-l-4 border-purple-600 pl-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200 rounded-r-lg">
+                    <h3 class="text-2xl font-semibold mb-2">Line Operator/Packaging Operator</h3>
+                    <p class="text-purple-600 font-medium mb-1">Hunters Amenities International Ltd.</p>
+                    <p class="text-gray-500 mb-4">January 2024 - February 2024 • Burlington, ON</p>
+                    <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Operate and monitor production equipment on the manufacturing line
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Follow standard operating procedures (SOPs) and safety guidelines
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Monitor production processes to maintain quality and efficiency standards
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Set up and adjust machinery to ensure proper functioning and production specifications
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Support continuous improvement initiatives to enhance efficiency and productivity
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-zinc-900">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl font-bold mb-12 text-center">
+                <span class="gradient-text">Technical Skills</span>
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Front-end -->
+                <div class="group relative bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                    <div class="relative flex items-center mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold">Front-end</h3>
+                    </div>
+                    <div class="relative flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm">HTML</span>
+                        <span class="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm">CSS</span>
+                        <span class="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm">JavaScript</span>
+                        <span class="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm">Vue.js</span>
+                        <span class="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm">Nuxt.js</span>
+                        <span class="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm">AlpineJS</span>
+                    </div>
+                </div>
+
+                <!-- CSS Frameworks -->
+                <div class="group relative bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                    <div class="relative flex items-center mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold">CSS Frameworks</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-sm">Bootstrap</span>
+                        <span class="px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-sm">Tailwind CSS</span>
+                        <span class="px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-sm">Bulma</span>
+                        <span class="px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-sm">Vuetify</span>
+                    </div>
+                </div>
+
+                <!-- Back-end -->
+                <div class="group relative bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                    <div class="relative flex items-center mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold">Back-end</h3>
+                    </div>
+                    <div class="relative flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-green-50 text-green-700 rounded-full text-sm">Node.js</span>
+                        <span class="px-3 py-1 bg-green-50 text-green-700 rounded-full text-sm">Express</span>
+                        <span class="px-3 py-1 bg-green-50 text-green-700 rounded-full text-sm">AdonisJS</span>
+                        <span class="px-3 py-1 bg-green-50 text-green-700 rounded-full text-sm">FeathersJS</span>
+                        <span class="px-3 py-1 bg-green-50 text-green-700 rounded-full text-sm">CodeIgniter</span>
+                        <span class="px-3 py-1 bg-green-50 text-green-700 rounded-full text-sm">Laravel</span>
+                    </div>
+                </div>
+
+                <!-- Database -->
+                <div class="group relative bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                    <div class="relative flex items-center mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold">Database</h3>
+                    </div>
+                    <div class="relative flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full text-sm">PostgreSQL</span>
+                        <span class="px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full text-sm">MySQL</span>
+                        <span class="px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full text-sm">MongoDB</span>
+                    </div>
+                </div>
+
+                <!-- CMS & E-commerce -->
+                <div class="group relative bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                    <div class="relative flex items-center mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold">CMS & E-commerce</h3>
+                    </div>
+                    <div class="relative flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-red-50 text-red-700 rounded-full text-sm">WordPress</span>
+                        <span class="px-3 py-1 bg-red-50 text-red-700 rounded-full text-sm">Elementor</span>
+                        <span class="px-3 py-1 bg-red-50 text-red-700 rounded-full text-sm">Shopify</span>
+                        <span class="px-3 py-1 bg-red-50 text-red-700 rounded-full text-sm">Liquid</span>
+                    </div>
+                </div>
+
+                <!-- Design & UX -->
+                <div class="group relative bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                    <div class="relative flex items-center mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold">Design & UX</h3>
+                    </div>
+                    <div class="relative flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-pink-50 text-pink-700 rounded-full text-sm">Wireframing</span>
+                        <span class="px-3 py-1 bg-pink-50 text-pink-700 rounded-full text-sm">Figma</span>
+                        <span class="px-3 py-1 bg-pink-50 text-pink-700 rounded-full text-sm">Photoshop</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl font-bold mb-12 text-center">
+                <span class="gradient-text">Education</span>
+            </h2>
+
+            <div class="max-w-3xl mx-auto">
+                <div class="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-700 dark:to-gray-700 p-8 rounded-lg shadow-sm">
+                    <div class="flex items-start">
+                        <div class="w-16 h-16 bg-white dark:bg-gray-600 rounded-lg flex items-center justify-center mr-6 flex-shrink-0">
+                            <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-2 dark:text-gray-100">Bachelor of Science in Information Technology</h3>
+                            <p class="text-gray-700 dark:text-gray-300 mb-2">Web Track</p>
+                            <p class="text-blue-600 dark:text-blue-400 font-medium mb-1">University of the Cordilleras</p>
+                            <p class="text-gray-600 dark:text-gray-400">2016 - 2020</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="relative py-32 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-gray-50 dark:from-zinc-800 dark:to-zinc-900 overflow-hidden">
+        <!-- Reversed Particles Background -->
+        <div class="particles-container-reverse">
+            <script>
+                // Create reversed particles (falling down)
+                const particlesContainerReverse = document.querySelector('.particles-container-reverse');
+                if (particlesContainerReverse) {
+                    for (let i = 0; i < 30; i++) {
+                        const particle = document.createElement('div');
+                        particle.className = 'particle-reverse';
+                        particle.style.width = Math.random() * 8 + 4 + 'px';
+                        particle.style.height = particle.style.width;
+                        particle.style.left = Math.random() * 100 + '%';
+                        particle.style.animationDuration = Math.random() * 15 + 10 + 's';
+                        particle.style.animationDelay = Math.random() * 5 + 's';
+                        particlesContainerReverse.appendChild(particle);
+                    }
+                }
+            </script>
+        </div>
+
+        <div class="relative max-w-6xl mx-auto text-center z-10">
+            <h2 class="text-5xl md:text-6xl font-bold mb-6">
+                <span class="gradient-text">Let's Work Together</span>
+            </h2>
+            <p class="text-xl text-gray-700 dark:text-gray-300 mb-16 max-w-3xl mx-auto">
+                Have a project in mind or just want to chat? I'm always excited to connect with fellow developers, potential clients, and creative minds.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-16">
+                <a href="mailto:kunerrrs@gmail.com" class="group relative bg-white dark:bg-gray-700 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                    <div class="relative">
+                        <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 gradient-text">Email</h3>
+                        <p class="text-gray-600 dark:text-gray-400">kunerrrs@gmail.com</p>
+                    </div>
+                </a>
+
+                <a href="tel:+14378389783" class="group relative bg-white dark:bg-gray-700 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                    <div class="relative">
+                        <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 gradient-text">Phone</h3>
+                        <p class="text-gray-600 dark:text-gray-400">(437) 838-9783</p>
+                    </div>
+                </a>
+
+                <div class="group relative bg-white dark:bg-gray-700 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                    <div class="relative">
+                        <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 gradient-text">Location</h3>
+                        <p class="text-gray-600 dark:text-gray-400">Hamilton, ON, Canada</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-zinc-900 py-8 px-4 sm:px-6 lg:px-8 border-t border-gray-200 dark:border-gray-700">
+        <div class="max-w-6xl mx-auto text-center">
+            <!-- Social Links -->
+            <div class="flex justify-center space-x-6 mb-4">
+                <a href="https://github.com/kunerrs" target="_blank" class="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
+                    GitHub
+                </a>
+                <a href="https://www.linkedin.com/in/gregory-kun-73809b172/" target="_blank" class="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
+                    LinkedIn
+                </a>
+                <a href="https://www.facebook.com" target="_blank" class="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
+                    Facebook
+                </a>
+            </div>
+            <p class="text-gray-600 dark:text-gray-400">&copy; 2025 Gregory Kun.</p>
+        </div>
+    </footer>
+
+    <!-- External Scripts -->
+    <script src="/js/app.js"></script>
+    </div>
+
+    <!-- Mobile Chat Toggle Button (visible only on mobile) -->
+    <button
+        @click="chatOpen = !chatOpen"
+        class="lg:hidden fixed bottom-6 right-6 z-50 w-14 h-14 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-transform duration-200">
+        <svg x-show="!chatOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+        </svg>
+        <svg x-show="chatOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+    </button>
+
+    <!-- Chat Sidebar (1/4 width on desktop, full screen overlay on mobile) -->
+    <aside
+        class="w-full lg:w-1/4 bg-white dark:bg-zinc-900 border-l border-gray-200 dark:border-gray-700 fixed right-0 top-0 h-screen flex flex-col z-40 transition-transform duration-300"
+        :class="chatOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'">
+        <!-- Chat Header -->
+        <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+            <div class="flex items-center space-x-3">
+                <div class="relative">
+                    <img src="assets/ramen.jpeg" alt="Ramen" class="w-12 h-12 rounded-full object-cover">
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white dark:border-gray-800 rounded-full"></span>
+                </div>
+                <div>
+                    <h2 class="text-lg font-bold gradient-text">Ramen 🐾</h2>
+                    <p class="text-xs text-gray-500 dark:text-gray-300">Online & Ready to Help!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Messages -->
+        <div class="flex-1 overflow-y-auto p-4 space-y-4 chat-messages" style="max-height: calc(100vh - 200px);">
+            <!-- Welcome Message -->
+            <div x-show="isChatOnline" class="chat-message">
+                <div class="flex items-start space-x-2">
+                    <img src="assets/ramen.jpeg" alt="Ramen" class="w-8 h-8 rounded-full object-cover flex-shrink-0">
+                    <div class="bg-gray-100 dark:bg-gray-700 rounded-lg rounded-tl-none p-3 max-w-[80%]">
+                        <p class="text-sm text-gray-800 dark:text-gray-200">Woof! 🐾 My human's probably out getting snacks (or coding something cool), but don't worry—I've been taking notes! I know all about his work, skills, and projects. Ask me anything, and I'll fetch you the answers! 🎾</p>
+                        <span class="text-xs text-gray-500 dark:text-gray-300 mt-1 block">just now</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Offline Message -->
+            <div x-show="!isChatOnline" class="chat-message">
+                <div class="flex items-start space-x-2">
+                    <img src="assets/ramen.jpeg" alt="Ramen" class="w-8 h-8 rounded-full object-cover flex-shrink-0">
+                    <div class="bg-red-100 dark:bg-red-900/30 rounded-lg rounded-tl-none p-3 max-w-[80%] border-l-4 border-red-500">
+                        <p class="text-sm text-red-800 dark:text-red-200">⚠️ Chat is currently offline. The backend server appears to be down. Please try again later or contact the site administrator.</p>
+                        <span class="text-xs text-red-600 dark:text-red-300 mt-1 block">System Message</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic Messages -->
+            <template x-for="(message, index) in chatMessages" :key="index">
+                <div class="chat-message" :class="message.sender === 'user' ? 'flex justify-end' : 'flex items-start space-x-2'">
+                    <template x-if="message.sender === 'bot'">
+                        <img src="assets/ramen.jpeg" alt="Ramen" class="w-8 h-8 rounded-full object-cover flex-shrink-0">
+                    </template>
+                    <div class="rounded-lg p-3 max-w-[80%]"
+                         :class="message.sender === 'user'
+                             ? 'bg-blue-600 text-white rounded-tr-none'
+                             : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-tl-none'">
+                        <p class="text-sm" x-text="message.text"></p>
+                        <span class="text-xs mt-1 block opacity-75" x-text="message.timestamp"></span>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Typing Indicator -->
+            <div x-show="isTyping" class="chat-message flex items-start space-x-2">
+                <img src="assets/ramen.jpeg" alt="Ramen" class="w-8 h-8 rounded-full object-cover flex-shrink-0">
+                <div class="bg-gray-100 dark:bg-gray-700 rounded-lg rounded-tl-none p-3">
+                    <div class="flex space-x-1">
+                        <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0s;"></div>
+                        <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.2s;"></div>
+                        <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.4s;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Input -->
+        <div class="p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+            <!-- Character Counter -->
+            <div class="flex justify-between items-center mb-2 px-1">
+                <p class="text-xs text-gray-500 dark:text-gray-300">
+                    Chat with Ramen 🐾
+                </p>
+                <p class="text-xs font-medium"
+                   :class="chatCharsRemaining < 50 ? 'text-red-500 dark:text-red-400' : chatCharsRemaining < 100 ? 'text-yellow-500 dark:text-yellow-400' : 'text-gray-500 dark:text-gray-300'">
+                    <span x-text="chatCharCount"></span>/<span x-text="maxChatLength"></span>
+                </p>
+            </div>
+
+            <form @submit.prevent class="flex space-x-2">
+                <input
+                    type="text"
+                    x-model="chatInput"
+                    :maxlength="maxChatLength"
+                    placeholder="Type a message..."
+                    :disabled="isTyping || !isChatOnline"
+                    @keydown.enter.prevent="sendMessage"
+                    class="flex-1 px-4 py-2 bg-white dark:bg-zinc-900 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:text-gray-200 chat-input transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                />
+                <button
+                    type="button"
+                    @click.prevent="sendMessage"
+                    :disabled="isTyping || isCooldown || chatInput.trim() === '' || !isChatOnline"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </aside>
+
+</body>
+</html>

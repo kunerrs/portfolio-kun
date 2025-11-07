@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Environment variables
+.env
+server/.env
+
+# Build outputs
+client/dist/
+dist/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.iml
+
+# Temporary files
+*.tmp
+*.temp
+
+# Lock files (optional - comment out if you want to commit them)
+# package-lock.json
+# yarn.lock
+
+# Resume files in root
+Gregory_Kun_Resume.docx
+Resume_in_txt.txt
+other_xp.txt

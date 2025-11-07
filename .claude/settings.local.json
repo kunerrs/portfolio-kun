@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run dev:*)",
+      "Bash(npm install:*)",
+      "Bash(move index.html client )",
+      "Bash(move assets client )",
+      "Bash(move css client )",
+      "Bash(move js client )",
+      "Bash(move partials client)",
+      "Bash(curl:*)",
+      "Bash(move:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

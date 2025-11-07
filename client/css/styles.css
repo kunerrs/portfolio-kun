@@ -1,0 +1,240 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Dark mode text improvements */
+.dark p {
+    color: rgb(229 231 235); /* gray-200 */
+}
+
+.dark li {
+    color: rgb(229 231 235); /* gray-200 */
+}
+
+/* Mobile responsive improvements */
+@media (max-width: 1023px) {
+    /* Hide chat by default on mobile */
+    aside {
+        box-shadow: -4px 0 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Adjust main content padding for mobile */
+    .max-w-6xl {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    /* Better spacing for mobile hero section */
+    section {
+        padding-top: 5rem !important;
+        padding-bottom: 3rem !important;
+    }
+}
+
+.gradient-text {
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.section-fade {
+    animation: fadeIn 0.6s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Profile Picture Hover Effect */
+.profile-pic-container {
+    cursor: pointer;
+}
+
+.profile-pic-container:hover .profile-pic-default {
+    opacity: 0;
+}
+
+.profile-pic-container:hover .profile-pic-hover {
+    opacity: 1;
+}
+
+/* Particles Background */
+.particles-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.particle {
+    position: absolute;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: float linear infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(100vh) translateX(0) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.6;
+    }
+    90% {
+        opacity: 0.6;
+    }
+    100% {
+        transform: translateY(-100px) translateX(100px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Reversed Particles Background (falling down) */
+.particles-container-reverse {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.particle-reverse {
+    position: absolute;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    border-radius: 50%;
+    opacity: 0.4;
+    animation: fallDown linear infinite;
+}
+
+@keyframes fallDown {
+    0% {
+        transform: translateY(-100px) translateX(0) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.4;
+    }
+    90% {
+        opacity: 0.4;
+    }
+    100% {
+        transform: translateY(100vh) translateX(-100px) rotate(-360deg);
+        opacity: 0;
+    }
+}
+
+/* Chat Styles */
+.chat-message {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.chat-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Scrollbar Styles */
+.chat-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+.dark .chat-messages::-webkit-scrollbar-thumb {
+    background: #475569;
+}
+
+/* Project Carousel Slide Animations */
+@keyframes slideInRight {
+    0% {
+        opacity: 0;
+        transform: translateX(300px) scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+@keyframes slideInLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-300px) scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+@keyframes slideOutRight {
+    0% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(-300px) scale(0.9);
+    }
+}
+
+@keyframes slideOutLeft {
+    0% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(300px) scale(0.9);
+    }
+}
+
+.project-slide-right {
+    animation: slideInRight 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.project-slide-left {
+    animation: slideInLeft 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.project-slide-out-right {
+    animation: slideOutRight 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.project-slide-out-left {
+    animation: slideOutLeft 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
