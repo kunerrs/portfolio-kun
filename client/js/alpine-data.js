@@ -169,7 +169,9 @@ window.portfolioData = {
         try {
             // Call backend API
             console.log('Fetching from backend...');
-            const response = await fetch('http://localhost:3000/api/chat', {
+            // Production: https://portfolio-kun.onrender.com/api/chat
+            // Development: http://localhost:3000/api/chat
+            const response = await fetch('https://portfolio-kun.onrender.com/api/chat', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -225,7 +227,9 @@ window.portfolioData = {
     },
     async checkChatHealth() {
         try {
-            const response = await fetch('http://localhost:3000/health', {
+            // Production: https://portfolio-kun.onrender.com/health
+            // Development: http://localhost:3000/health
+            const response = await fetch('https://portfolio-kun.onrender.com/health', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
