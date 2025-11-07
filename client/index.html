@@ -31,6 +31,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gregory Kun - Web Developer Portfolio</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -44,7 +45,7 @@
     <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
 
     <!-- Alpine.js Data (must load before Alpine.js) -->
-    <script src="./js/alpine-data.js?v=2"></script>
+    <script src="./js/alpine-data.js?v=5"></script>
 
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -184,10 +185,10 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                     </svg>
-                    Born in <b> Baguio, Philippines </b>  | Currently lives in <b> Hamilton, ON, Canada </b>
+                    Born in the <b class="px-2 tracking-wider"> 🏝️ Philippines </b>  —  &nbsp; Currently residing in <b class="px-2 tracking-wider"> ⛄ Canada  </b>
                 </p>
                 <div class="max-w-3xl mx-auto mb-10">
-                    <p class="text-lg text-gray-700 leading-relaxed">
+                    <p class="text-lg font-md text-gray-700 leading-relaxed">
                         Web developer with experience in both back-end and front-end development, including HTML, CSS, and JavaScript.
                         Passionate about creating engaging interfaces that deliver seamless user experiences.
                         Continuously learning and adapting to new technologies is a top priority.
@@ -249,14 +250,14 @@
                 <div class="flex items-center justify-center gap-4">
                     <!-- Previous Button -->
                     <button @click="prevProject"
-                            class="flex-shrink-0 p-3 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200 z-10">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            class="flex-shrink-0 p-2 sm:p-3 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200 z-10">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                         </svg>
                     </button>
 
                     <!-- Projects Display -->
-                    <div class="flex items-center justify-center gap-4 overflow-hidden w-full max-w-5xl">
+                    <div class="flex items-center justify-center gap-2 sm:gap-4 overflow-hidden w-full max-w-5xl">
                         <!-- Left Side Project (Faded) -->
                         <div class="hidden lg:block w-64 opacity-30 transform scale-90 transition-all duration-300">
                             <div class="bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden shadow-sm">
@@ -269,17 +270,17 @@
                         </div>
 
                         <!-- Center Project (Active) -->
-                        <div class="w-full max-w-md">
-                            <div :class="isSliding ? (slideDirection === 'right' ? 'project-slide-right' : 'project-slide-left') : ''"
-                                 class="bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden shadow-lg">
-                                <div class="aspect-video bg-gray-200 dark:bg-gray-600">
+                        <div class="w-full sm:max-w-md mx-auto">
+                            <div class="project-card bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden shadow-lg"
+                                 :class="{'active': isProjectActive}">
+                                <div @click="openImageModal(projects[currentProject].image)" class="aspect-video bg-gray-200 dark:bg-gray-600 cursor-pointer hover:opacity-90 transition-opacity">
                                     <img :src="projects[currentProject].image"
                                          :alt="projects[currentProject].title"
                                          class="w-full h-full object-cover">
                                 </div>
-                                <div class="p-6">
+                                <div class="p-4 sm:p-6">
                                     <div class="flex items-center gap-2 mb-2">
-                                        <h3 class="text-2xl font-semibold dark:text-white" x-text="projects[currentProject].title"></h3>
+                                        <h3 class="text-xl sm:text-2xl font-semibold dark:text-white" x-text="projects[currentProject].title"></h3>
                                         <a :href="projects[currentProject].demo"
                                            target="_blank"
                                            class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors duration-200">
@@ -289,9 +290,9 @@
                                         </a>
                                     </div>
                                     <p class="hidden md:block text-gray-600 dark:text-gray-300 mb-4" x-text="projects[currentProject].description"></p>
-                                    <div class="flex flex-wrap gap-2">
+                                    <div class="flex flex-wrap gap-1.5 sm:gap-2">
                                         <template x-for="tag in projects[currentProject].tags" :key="tag">
-                                            <span class="px-3 py-1 rounded-full text-sm"
+                                            <span class="px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm"
                                                   :class="{
                                                       'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300': projects[currentProject].tagColor === 'blue',
                                                       'bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300': projects[currentProject].tagColor === 'purple',
@@ -318,8 +319,8 @@
 
                     <!-- Next Button -->
                     <button @click="nextProject"
-                            class="flex-shrink-0 p-3 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200 z-10">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            class="flex-shrink-0 p-2 sm:p-3 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200 z-10">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                         </svg>
                     </button>
@@ -345,23 +346,35 @@
             </h2>
 
             <!-- Tabs -->
-            <div class="flex justify-center mb-8">
-                <div class="inline-flex rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-zinc-900 p-1">
+            <div class="flex justify-center mb-12">
+                <div class="relative inline-flex gap-2 p-1 bg-gray-100 dark:bg-gray-800 rounded-xl">
+                    <!-- Sliding background indicator -->
+                    <div class="absolute top-1 bottom-1 rounded-lg shadow-lg transition-all duration-300 ease-in-out"
+                         :class="experienceTab === 'professional' ? 'bg-gradient-to-r from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700' : 'bg-gradient-to-r from-purple-500 to-purple-600 dark:from-purple-600 dark:to-purple-700'"
+                         :style="`left: ${experienceTab === 'professional' ? '0.25rem' : '50%'}; width: calc(50% - 0.25rem);`"></div>
+
                     <button @click="experienceTab = 'professional'"
-                            :class="experienceTab === 'professional' ? 'bg-white dark:bg-gray-700 shadow-sm' : 'hover:bg-gray-100 dark:hover:bg-gray-700'"
-                            class="px-6 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                        Professional Experience
+                            :class="experienceTab === 'professional' ? 'text-white' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'"
+                            class="relative tracking-wider z-10 w-32 py-2.5 rounded-lg text-xs font-semibold transition-colors duration-200 text-center uppercase">
+                        Web Dev
                     </button>
                     <button @click="experienceTab = 'other'"
-                            :class="experienceTab === 'other' ? 'bg-white dark:bg-gray-700 shadow-sm' : 'hover:bg-gray-100 dark:hover:bg-gray-700'"
-                            class="px-6 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                        Other Experience
+                            :class="experienceTab === 'other' ? 'text-white' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'"
+                            class="relative tracking-wider z-10 w-32 py-2.5 rounded-lg text-xs font-semibold transition-colors duration-200 text-center uppercase">
+                        Non-Web Dev
                     </button>
                 </div>
             </div>
 
             <!-- Professional Experience Tab -->
-            <div x-show="experienceTab === 'professional'" class="space-y-8">
+            <div x-show="experienceTab === 'professional'"
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0 transform scale-95"
+                 x-transition:enter-end="opacity-100 transform scale-100"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="opacity-100 transform scale-100"
+                 x-transition:leave-end="opacity-0 transform scale-95"
+                 class="space-y-8">
                 <!-- Job 1 -->
                 <div class="border-l-4 border-blue-600 pl-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200 rounded-r-lg">
                     <h3 class="text-2xl font-semibold mb-2">Full Stack Web Developer</h3>
@@ -506,7 +519,14 @@
             </div>
 
             <!-- Other Experience Tab -->
-            <div x-show="experienceTab === 'other'" class="space-y-8">
+            <div x-show="experienceTab === 'other'"
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0 transform scale-95"
+                 x-transition:enter-end="opacity-100 transform scale-100"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="opacity-100 transform scale-100"
+                 x-transition:leave-end="opacity-0 transform scale-95"
+                 class="space-y-8">
                 <!-- CNC Operator -->
                 <div class="border-l-4 border-purple-600 pl-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200 rounded-r-lg">
                     <h3 class="text-2xl font-semibold mb-2">CNC Operator</h3>
@@ -1003,6 +1023,34 @@
             </form>
         </div>
     </aside>
+
+    <!-- Image Modal -->
+    <div x-show="imageModalOpen"
+         x-cloak
+         @click="closeImageModal"
+         @keydown.escape.window="closeImageModal"
+         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-75"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0">
+        <div class="relative max-w-7xl max-h-[90vh] w-full">
+            <!-- Close button -->
+            <button @click="closeImageModal"
+                    class="absolute -top-10 right-0 text-white hover:text-gray-300 transition-colors">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+            <!-- Image -->
+            <img :src="modalImageSrc"
+                 @click.stop
+                 class="w-full h-auto max-h-[90vh] object-contain rounded-lg shadow-2xl"
+                 alt="Project screenshot">
+        </div>
+    </div>
 
 </body>
 </html>

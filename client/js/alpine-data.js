@@ -6,7 +6,7 @@ window.portfolioData = {
     experienceTab: 'professional',
     darkMode: false,
     currentProject: 0,
-    slideDirection: 'right',
+    isProjectActive: true,
     isSliding: false,
     chatMessages: [],
     chatInput: '',
@@ -15,6 +15,8 @@ window.portfolioData = {
     isChatOnline: true,
     cooldownTime: 3000, // 3 seconds cooldown between messages
     maxChatLength: 120,
+    imageModalOpen: false,
+    modalImageSrc: '',
     get chatCharCount() {
         return this.chatInput.length;
     },
@@ -292,22 +294,54 @@ window.portfolioData = {
         this.mobileMenuOpen = false;
     },
     nextProject() {
-        this.slideDirection = 'right';
-        this.currentProject = (this.currentProject + 1) % this.projects.length;
+        if (this.isSliding) return; // Prevent multiple clicks
         this.isSliding = true;
+
+        // 1. Fade out current project
+        this.isProjectActive = false;
+
+        // 2. After fade out, change project
         setTimeout(() => {
-            this.isSliding = false;
-        }, 100);
+            this.currentProject = (this.currentProject + 1) % this.projects.length;
+
+            // 3. Fade in new project
+            setTimeout(() => {
+                this.isProjectActive = true;
+                this.isSliding = false;
+            }, 50);
+        }, 600); // Match CSS transition duration
     },
     prevProject() {
-        this.slideDirection = 'left';
-        this.currentProject = (this.currentProject - 1 + this.projects.length) % this.projects.length;
+        if (this.isSliding) return; // Prevent multiple clicks
         this.isSliding = true;
+
+        // 1. Fade out current project
+        this.isProjectActive = false;
+
+        // 2. After fade out, change project
         setTimeout(() => {
-            this.isSliding = false;
-        }, 100);
+            this.currentProject = (this.currentProject - 1 + this.projects.length) % this.projects.length;
+
+            // 3. Fade in new project
+            setTimeout(() => {
+                this.isProjectActive = true;
+                this.isSliding = false;
+            }, 50);
+        }, 600); // Match CSS transition duration
     },
     getProjectIndex(offset) {
         return (this.currentProject + offset + this.projects.length) % this.projects.length;
+    },
+    openImageModal(imageSrc) {
+        this.modalImageSrc = imageSrc;
+        this.imageModalOpen = true;
+        // Prevent body scroll when modal is open
+        document.body.style.overflow = 'hidden';
+    },
+    closeImageModal() {
+        this.imageModalOpen = false;
+        this.modalImageSrc = '';
+        // Re-enable body scroll
+        document.body.style.overflow = '';
     }
 };
