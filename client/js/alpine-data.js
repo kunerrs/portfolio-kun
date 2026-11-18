@@ -1,7 +1,10 @@
 // Use the local backend during local development, the deployed backend otherwise
-const API_BASE_URL = ['localhost', '127.0.0.1'].includes(window.location.hostname)
-    ? 'http://localhost:3000'
-    : 'https://portfolio-kun.onrender.com';
+const LOCAL_API_URL = 'http://localhost:3000';
+const DEPLOYED_API_URL = 'https://portfolio-kun.onrender.com';
+
+let apiBaseUrl = ['localhost', '127.0.0.1'].includes(window.location.hostname)
+    ? LOCAL_API_URL
+    : DEPLOYED_API_URL;
 
 // Alpine.js data configuration
 window.portfolioData = {
@@ -177,7 +180,7 @@ window.portfolioData = {
         try {
             // Call backend API
             console.log('Fetching from backend...');
-            const response = await fetch(`${API_BASE_URL}/api/chat`, {
+            const response = await fetch(`${apiBaseUrl}/api/chat`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -252,7 +255,7 @@ window.portfolioData = {
                 try {
                     // No custom headers here: that keeps this a simple request,
                     // so the health check needs no CORS preflight.
-                    const response = await fetch(`${API_BASE_URL}/health`, {
+                    const response = await fetch(`${apiBaseUrl}/health`, {
                         method: 'GET',
                         cache: 'no-store',
                     });
@@ -267,6 +270,14 @@ window.portfolioData = {
                     );
                 } catch (error) {
                     console.warn(`Chat backend unreachable (attempt ${attempt}):`, error.message);
+                }
+
+                // In local dev the backend may be stopped or on another port, so
+                // fall back to the deployed API instead of reporting chat offline.
+                if (apiBaseUrl === LOCAL_API_URL) {
+                    apiBaseUrl = DEPLOYED_API_URL;
+                    console.warn(`Local backend unavailable, falling back to ${apiBaseUrl}`);
+                    continue;
                 }
 
                 if (Date.now() >= deadline) {
