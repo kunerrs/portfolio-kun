@@ -18,6 +18,7 @@ window.portfolioData = {
     isTyping: false,
     isCooldown: false,
     isChatOnline: true,
+    healthCheckInFlight: false,
     cooldownTime: 3000, // 3 seconds cooldown between messages
     maxChatLength: 120,
     imageModalOpen: false,
@@ -234,41 +235,50 @@ window.portfolioData = {
         }, 100);
     },
     async checkChatHealth({ timeoutMs = 60000, intervalMs = 4000 } = {}) {
+        // Never run two checks at once (init, chat open, interval and retries
+        // all funnel through here).
+        if (this.healthCheckInFlight) return this.isChatOnline;
+        this.healthCheckInFlight = true;
+
         // The free backend sleeps when idle and can take up to a minute to wake,
         // so keep polling instead of marking chat offline on the first failure.
         const deadline = Date.now() + timeoutMs;
         let attempt = 0;
 
-        while (true) {
-            attempt += 1;
+        try {
+            while (true) {
+                attempt += 1;
 
-            try {
-                // No custom headers here: that keeps this a simple request, so
-                // the health check needs no CORS preflight.
-                const response = await fetch(`${API_BASE_URL}/health`, {
-                    method: 'GET',
-                    cache: 'no-store',
-                });
+                try {
+                    // No custom headers here: that keeps this a simple request,
+                    // so the health check needs no CORS preflight.
+                    const response = await fetch(`${API_BASE_URL}/health`, {
+                        method: 'GET',
+                        cache: 'no-store',
+                    });
 
-                if (response.ok) {
-                    this.isChatOnline = true;
-                    return true;
+                    if (response.ok) {
+                        this.isChatOnline = true;
+                        return true;
+                    }
+
+                    console.warn(
+                        `Chat backend health check returned ${response.status} (attempt ${attempt})`
+                    );
+                } catch (error) {
+                    console.warn(`Chat backend unreachable (attempt ${attempt}):`, error.message);
                 }
 
-                console.warn(
-                    `Chat backend health check returned ${response.status} (attempt ${attempt})`
-                );
-            } catch (error) {
-                console.warn(`Chat backend unreachable (attempt ${attempt}):`, error.message);
-            }
+                if (Date.now() >= deadline) {
+                    console.warn(`Chat backend still offline after ${attempt} attempts`);
+                    this.isChatOnline = false;
+                    return false;
+                }
 
-            if (Date.now() >= deadline) {
-                console.warn(`Chat backend still offline after ${attempt} attempts`);
-                this.isChatOnline = false;
-                return false;
+                await new Promise((resolve) => setTimeout(resolve, intervalMs));
             }
-
-            await new Promise((resolve) => setTimeout(resolve, intervalMs));
+        } finally {
+            this.healthCheckInFlight = false;
         }
     },
     init() {
@@ -297,6 +307,14 @@ window.portfolioData = {
                 }
             });
         }
+
+        // Keep retrying in the background while offline, so a backend that sleeps
+        // or drops mid-session brings the chat back without a page reload.
+        setInterval(() => {
+            if (!this.isChatOnline) {
+                this.checkChatHealth({ timeoutMs: 20000, intervalMs: 5000 });
+            }
+        }, 30000);
 
         // Scroll spy - update active section based on scroll position
         window.addEventListener('scroll', () => {
