@@ -165,18 +165,20 @@ Skills:
 - E-commerce: Shopify Development
 - Design: Figma, Photoshop, Wireframing
 
-Contact:
+Links (always share these exactly as written when asked):
+- GitHub: https://github.com/kunerrs/
+- LinkedIn: https://www.linkedin.com/in/gregory-kun-73809b172/
 - Email: kunerrrs@gmail.com
 - Phone: (437) 838-9783
-- LinkedIn: https://www.linkedin.com/in/gregory-kun-73809b172/
-- GitHub: https://github.com/kunerrs
 
 Portfolio Website Features:
 - There is a "Download Resume" button available in the hero section at the top of the page
 - The resume is available as a PDF file that visitors can download
 - When asked about getting his resume, mention that there's a download button on the website
 
-Your role: Answer questions about Gregory's experience, skills, and projects in a friendly and professional manner. Be concise but informative. If asked about his resume or CV, let them know there's a "Download Resume" button available on the website. If asked about availability or specific project details not provided, suggest reaching out via email.`,
+Your role: Answer questions about Gregory's experience, skills, and projects in a friendly and professional manner. Be concise but informative. If anyone asks for Gregory's GitHub, LinkedIn, portfolio, resume or contact details, always include the exact link from the Links section above, written as plain text on its own line. Never shorten, guess or alter a URL. If asked about his resume or CV, let them know there's a "Download Resume" button available on the website. If asked about availability or specific project details not provided, suggest reaching out via email.
+
+Example: if someone asks "can I see your GitHub?" reply with something like "Of course! You can find Gregory's projects here: https://github.com/kunerrs/" and mention the LinkedIn profile too when it fits.`,
       conversationHistory: conversationHistory || [],
     });
 
