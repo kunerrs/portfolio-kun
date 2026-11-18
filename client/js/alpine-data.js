@@ -21,6 +21,7 @@ window.portfolioData = {
     isTyping: false,
     isCooldown: false,
     isChatOnline: true,
+    isChatWaking: false,
     healthCheckInFlight: false,
     cooldownTime: 3000, // 3 seconds cooldown between messages
     maxChatLength: 120,
@@ -105,7 +106,9 @@ window.portfolioData = {
 
         // Check if chat is online
         if (!this.isChatOnline) {
-            alert('Chat is currently offline. Please try again later.');
+            alert(this.isChatWaking
+                ? 'The chat server is waking up. Please try again in a moment.'
+                : 'Chat is currently offline. Please try again later.');
             return;
         }
 
@@ -262,6 +265,7 @@ window.portfolioData = {
 
                     if (response.ok) {
                         this.isChatOnline = true;
+                        this.isChatWaking = false;
                         return true;
                     }
 
@@ -283,8 +287,14 @@ window.portfolioData = {
                 if (Date.now() >= deadline) {
                     console.warn(`Chat backend still offline after ${attempt} attempts`);
                     this.isChatOnline = false;
+                    this.isChatWaking = false;
                     return false;
                 }
+
+                // Still retrying, so the server is most likely cold-starting:
+                // show "waking up" rather than warning that chat is offline.
+                this.isChatOnline = false;
+                this.isChatWaking = true;
 
                 await new Promise((resolve) => setTimeout(resolve, intervalMs));
             }

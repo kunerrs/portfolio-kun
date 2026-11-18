@@ -45,7 +45,7 @@
     <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
 
     <!-- Alpine.js Data (must load before Alpine.js) -->
-    <script src="./js/alpine-data.js?v=9"></script>
+    <script src="./js/alpine-data.js?v=10"></script>
 
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -926,11 +926,13 @@
             <div class="flex items-center space-x-3">
                 <div class="relative">
                     <img src="assets/ramen.jpeg" alt="Ramen" class="w-12 h-12 rounded-full object-cover">
-                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white dark:border-gray-800 rounded-full"></span>
+                    <span class="absolute bottom-0 right-0 w-3 h-3 border-2 border-white dark:border-gray-800 rounded-full"
+                          :class="isChatWaking ? 'bg-yellow-500 animate-pulse' : (isChatOnline ? 'bg-green-500' : 'bg-red-500')"></span>
                 </div>
                 <div>
                     <h2 class="text-lg font-bold gradient-text">Ramen 🐾</h2>
-                    <p class="text-xs text-gray-500 dark:text-gray-300">Online & Ready to Help!</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-300"
+                       x-text="isChatWaking ? 'Waking up the server...' : (isChatOnline ? 'Online & Ready to Help!' : 'Offline')"></p>
                 </div>
             </div>
         </div>
@@ -948,8 +950,24 @@
                 </div>
             </div>
 
+            <!-- Waking Up Message -->
+            <div x-show="isChatWaking" class="chat-message">
+                <div class="flex items-start space-x-2">
+                    <img src="assets/ramen.jpeg" alt="Ramen" class="w-8 h-8 rounded-full object-cover flex-shrink-0">
+                    <div class="bg-yellow-100 dark:bg-yellow-900/30 rounded-lg rounded-tl-none p-3 max-w-[80%] border-l-4 border-yellow-500">
+                        <p class="text-sm text-yellow-800 dark:text-yellow-200">🐾 Waking up the server... The first reply can take up to a minute while it boots. Hang tight!</p>
+                        <span class="text-xs text-yellow-700 dark:text-yellow-300 mt-1 flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 bg-yellow-500 rounded-full animate-bounce" style="animation-delay: 0s"></span>
+                            <span class="w-1.5 h-1.5 bg-yellow-500 rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
+                            <span class="w-1.5 h-1.5 bg-yellow-500 rounded-full animate-bounce" style="animation-delay: 0.4s"></span>
+                            System Message
+                        </span>
+                    </div>
+                </div>
+            </div>
+
             <!-- Offline Message -->
-            <div x-show="!isChatOnline" class="chat-message">
+            <div x-show="!isChatOnline && !isChatWaking" class="chat-message">
                 <div class="flex items-start space-x-2">
                     <img src="assets/ramen.jpeg" alt="Ramen" class="w-8 h-8 rounded-full object-cover flex-shrink-0">
                     <div class="bg-red-100 dark:bg-red-900/30 rounded-lg rounded-tl-none p-3 max-w-[80%] border-l-4 border-red-500">
