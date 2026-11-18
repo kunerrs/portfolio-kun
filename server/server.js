@@ -30,10 +30,19 @@ const chatLimiter = rateLimit({
 });
 
 // Middleware - Allow multiple origins for CORS
-const allowedOrigins = [
+const defaultOrigins = [
   'https://kunerrs.github.io',
   'https://portfolio-kun.onrender.com',
 ];
+
+// Allow extra origins through CLIENT_URL (comma-separated), so moving the
+// frontend to a custom domain or preview URL doesn't require a code change.
+const envOrigins = (process.env.CLIENT_URL || '')
+  .split(',')
+  .map((origin) => origin.trim().replace(/\/+$/, ''))
+  .filter(Boolean);
+
+const allowedOrigins = [...new Set([...envOrigins, ...defaultOrigins])];
 
 // Allow any localhost/127.0.0.1 port so local dev servers (Vite, Live Server, etc.) work
 const isLocalOrigin = (origin) => /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
@@ -48,7 +57,9 @@ app.use(cors({
       callback(null, true);
     } else {
       // Log the rejected origin for debugging
-      console.log(`CORS: Origin ${origin} not in allowed list`);
+      console.log(
+        `CORS: Origin ${origin} not in allowed list (allowed: ${allowedOrigins.join(', ')} + any localhost/127.0.0.1 port)`
+      );
       callback(new Error('Not allowed by CORS'));
     }
   },
@@ -199,7 +210,7 @@ Your role: Answer questions about Gregory's experience, skills, and projects in 
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
-  console.log(`📡 Accepting requests from: ${process.env.CLIENT_URL || 'http://localhost:5174'}`);
+  console.log(`📡 CORS allowed origins: ${allowedOrigins.join(', ')} (plus any localhost/127.0.0.1 port)`);
 
   if (!process.env.COHERE_API_KEY) {
     console.warn('⚠️  WARNING: COHERE_API_KEY is not set in .env file');

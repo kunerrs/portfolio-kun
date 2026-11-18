@@ -217,9 +217,12 @@ window.portfolioData = {
             console.error('Chat error:', error);
             this.isTyping = false;
 
+            // The request never completed, so refresh the online state for the UI.
+            this.checkChatHealth({ timeoutMs: 15000, intervalMs: 3000 });
+
             // Add error message
             this.chatMessages.push({
-                text: 'Sorry, I\'m having trouble connecting to the server. Please make sure the backend is running on port 3000.',
+                text: 'Sorry, I\'m having trouble connecting to the server. Please try again in a moment.',
                 sender: 'bot',
                 timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             });
@@ -230,18 +233,42 @@ window.portfolioData = {
             document.querySelector('.chat-messages').scrollTop = document.querySelector('.chat-messages').scrollHeight;
         }, 100);
     },
-    async checkChatHealth() {
-        try {
-            const response = await fetch(`${API_BASE_URL}/health`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            this.isChatOnline = response.ok;
-        } catch (error) {
-            console.warn('Chat backend is offline:', error.message);
-            this.isChatOnline = false;
+    async checkChatHealth({ timeoutMs = 60000, intervalMs = 4000 } = {}) {
+        // The free backend sleeps when idle and can take up to a minute to wake,
+        // so keep polling instead of marking chat offline on the first failure.
+        const deadline = Date.now() + timeoutMs;
+        let attempt = 0;
+
+        while (true) {
+            attempt += 1;
+
+            try {
+                // No custom headers here: that keeps this a simple request, so
+                // the health check needs no CORS preflight.
+                const response = await fetch(`${API_BASE_URL}/health`, {
+                    method: 'GET',
+                    cache: 'no-store',
+                });
+
+                if (response.ok) {
+                    this.isChatOnline = true;
+                    return true;
+                }
+
+                console.warn(
+                    `Chat backend health check returned ${response.status} (attempt ${attempt})`
+                );
+            } catch (error) {
+                console.warn(`Chat backend unreachable (attempt ${attempt}):`, error.message);
+            }
+
+            if (Date.now() >= deadline) {
+                console.warn(`Chat backend still offline after ${attempt} attempts`);
+                this.isChatOnline = false;
+                return false;
+            }
+
+            await new Promise((resolve) => setTimeout(resolve, intervalMs));
         }
     },
     init() {
@@ -260,6 +287,16 @@ window.portfolioData = {
 
         // Check chat backend health
         this.checkChatHealth();
+
+        // Re-check when the chat is opened, in case the backend was still asleep
+        // (or unreachable) when the page first loaded.
+        if (typeof this.$watch === 'function') {
+            this.$watch('chatOpen', (isOpen) => {
+                if (isOpen && !this.isChatOnline) {
+                    this.checkChatHealth();
+                }
+            });
+        }
 
         // Scroll spy - update active section based on scroll position
         window.addEventListener('scroll', () => {
