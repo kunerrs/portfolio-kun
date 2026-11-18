@@ -1,3 +1,8 @@
+// Use the local backend during local development, the deployed backend otherwise
+const API_BASE_URL = ['localhost', '127.0.0.1'].includes(window.location.hostname)
+    ? 'http://localhost:3000'
+    : 'https://portfolio-kun.onrender.com';
+
 // Alpine.js data configuration
 window.portfolioData = {
     activeSection: 'about',
@@ -171,9 +176,7 @@ window.portfolioData = {
         try {
             // Call backend API
             console.log('Fetching from backend...');
-            // Production: https://portfolio-kun.onrender.com/api/chat
-            // Development: http://localhost:3000/api/chat
-            const response = await fetch('https://portfolio-kun.onrender.com/api/chat', {
+            const response = await fetch(`${API_BASE_URL}/api/chat`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -229,9 +232,7 @@ window.portfolioData = {
     },
     async checkChatHealth() {
         try {
-            // Production: https://portfolio-kun.onrender.com/health
-            // Development: http://localhost:3000/health
-            const response = await fetch('https://portfolio-kun.onrender.com/health', {
+            const response = await fetch(`${API_BASE_URL}/health`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -239,7 +240,7 @@ window.portfolioData = {
             });
             this.isChatOnline = response.ok;
         } catch (error) {
-            console.error('Chat backend is offline:', error);
+            console.warn('Chat backend is offline:', error.message);
             this.isChatOnline = false;
         }
     },

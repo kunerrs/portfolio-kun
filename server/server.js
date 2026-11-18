@@ -32,18 +32,22 @@ const chatLimiter = rateLimit({
 // Middleware - Allow multiple origins for CORS
 const allowedOrigins = [
   'https://kunerrs.github.io',
-  'http://localhost:5174',
-  'http://127.0.0.1:5174'
+  'https://portfolio-kun.onrender.com',
 ];
+
+// Allow any localhost/127.0.0.1 port so local dev servers (Vite, Live Server, etc.) work
+const isLocalOrigin = (origin) => /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
 
 app.use(cors({
   origin: function (origin, callback) {
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
 
-    if (allowedOrigins.indexOf(origin) !== -1) {
+    if (allowedOrigins.indexOf(origin) !== -1 || isLocalOrigin(origin)) {
       callback(null, true);
     } else {
+      // Log the rejected origin for debugging
+      console.log(`CORS: Origin ${origin} not in allowed list`);
       callback(new Error('Not allowed by CORS'));
     }
   },
