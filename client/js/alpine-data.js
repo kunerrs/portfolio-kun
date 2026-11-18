@@ -240,6 +240,33 @@ window.portfolioData = {
             document.querySelector('.chat-messages').scrollTop = document.querySelector('.chat-messages').scrollHeight;
         }, 100);
     },
+    formatMessage(text) {
+        // Messages are plain text: escape them, then turn bare URLs into links.
+        const escaped = String(text ?? '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+
+        const html = escaped.replace(/(https?:\/\/[^\s<>"']+)/g, (url) => {
+            // Keep trailing punctuation outside the link.
+            const trailing = (url.match(/[.,;:!?]+$/) || [''])[0];
+            const href = trailing ? url.slice(0, -trailing.length) : url;
+
+            return `<a href="${href}" target="_blank" rel="noopener noreferrer" class="underline text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 break-all">${href}</a>${trailing}`;
+        });
+
+        // Only the anchors generated above may survive sanitising.
+        if (typeof DOMPurify !== 'undefined') {
+            return DOMPurify.sanitize(html, {
+                ALLOWED_TAGS: ['a'],
+                ALLOWED_ATTR: ['href', 'target', 'rel', 'class'],
+            });
+        }
+
+        return html;
+    },
     async checkChatHealth({ timeoutMs = 60000, intervalMs = 4000 } = {}) {
         // Never run two checks at once (init, chat open, interval and retries
         // all funnel through here).

@@ -45,7 +45,7 @@
     <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
 
     <!-- Alpine.js Data (must load before Alpine.js) -->
-    <script src="./js/alpine-data.js?v=10"></script>
+    <script src="./js/alpine-data.js?v=11"></script>
 
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -987,7 +987,7 @@
                          :class="message.sender === 'user'
                              ? 'bg-blue-600 text-white rounded-tr-none'
                              : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-tl-none'">
-                        <p class="text-sm" x-text="message.text"></p>
+                        <p class="text-sm whitespace-pre-line break-words" x-html="formatMessage(message.text)"></p>
                         <span class="text-xs mt-1 block opacity-75" x-text="message.timestamp"></span>
                     </div>
                 </div>
