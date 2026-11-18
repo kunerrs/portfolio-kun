@@ -43,7 +43,8 @@ app.use(cors({
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
 
-    if (allowedOrigins.indexOf(origin) !== -1 || isLocalOrigin(origin)) {
+    // "null" is the Origin sent by pages opened directly from disk (file://)
+    if (origin === 'null' || allowedOrigins.indexOf(origin) !== -1 || isLocalOrigin(origin)) {
       callback(null, true);
     } else {
       // Log the rejected origin for debugging
