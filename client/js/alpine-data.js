@@ -4,6 +4,10 @@ const LOCAL_API_URL = 'http://localhost:3000';
 // onrender.com: ad-blocker filter lists block that shared domain outright.
 const DEPLOYED_API_URL = 'https://portfolio-kun-chat.kunerrs.workers.dev';
 
+// A reply can be slow (cold start plus the model call), but it must never leave
+// the typing indicator spinning forever.
+const CHAT_TIMEOUT_MS = 45000;
+
 let apiBaseUrl = ['localhost', '127.0.0.1'].includes(window.location.hostname)
     ? LOCAL_API_URL
     : DEPLOYED_API_URL;
@@ -182,6 +186,9 @@ window.portfolioData = {
             document.querySelector('.chat-messages').scrollTop = document.querySelector('.chat-messages').scrollHeight;
         }, 100);
 
+        const chatController = new AbortController();
+        const chatTimer = setTimeout(() => chatController.abort(), CHAT_TIMEOUT_MS);
+
         try {
             // Call backend API
             console.log('Fetching from backend...');
@@ -191,6 +198,7 @@ window.portfolioData = {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ message: userMessage }),
+                signal: chatController.signal,
             });
 
             console.log('Response received:', response.status);
@@ -223,6 +231,7 @@ window.portfolioData = {
             });
 
         } catch (error) {
+            const timedOut = error.name === 'AbortError';
             console.error('Chat error:', error);
             this.isTyping = false;
 
@@ -231,10 +240,14 @@ window.portfolioData = {
 
             // Add error message
             this.chatMessages.push({
-                text: 'Sorry, I\'m having trouble connecting to the server. Please try again in a moment.',
+                text: timedOut
+                    ? 'That answer took too long, so I stopped waiting. Please try again.'
+                    : 'Sorry, I\'m having trouble connecting to the server. Please try again in a moment.',
                 sender: 'bot',
                 timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             });
+        } finally {
+            clearTimeout(chatTimer);
         }
 
         // Scroll to bottom after bot response
