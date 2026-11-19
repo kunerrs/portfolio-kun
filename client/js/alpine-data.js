@@ -29,6 +29,7 @@ window.portfolioData = {
     isChatOnline: true,
     isChatWaking: false,
     healthCheckInFlight: false,
+    healthCheckedOnce: false,
     cooldownTime: 3000, // 3 seconds cooldown between messages
     maxChatLength: 120,
     imageModalOpen: false,
@@ -238,6 +239,20 @@ window.portfolioData = {
                 return;
             }
 
+            // 503 means the chat host is waking up or throttling us, so offer a
+            // retry instead of a generic failure.
+            if (response.status === 503) {
+                this.chatMessages.push({
+                    text: data.error || 'Ramen is waking up right now. Please try again in a moment.',
+                    sender: 'bot',
+                    timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    failed: true,
+                    retryText: userMessage
+                });
+                this.checkChatHealth({ timeoutMs: 15000, intervalMs: 3000 });
+                return;
+            }
+
             // Sanitize bot response to prevent XSS attacks
             const sanitizedReply = DOMPurify.sanitize(data.reply || 'Sorry, I couldn\'t process that.', {
                 ALLOWED_TAGS: [], // Strip all HTML tags
@@ -310,11 +325,13 @@ window.portfolioData = {
         // all funnel through here).
         if (this.healthCheckInFlight) return this.isChatOnline;
         this.healthCheckInFlight = true;
+        this.healthCheckedOnce = true;
 
         // The free backend sleeps when idle and can take up to a minute to wake,
         // so keep polling instead of marking chat offline on the first failure.
         const deadline = Date.now() + timeoutMs;
         let attempt = 0;
+        let lastFailure = null;
 
         try {
             // Hard stop at the deadline: each attempt is bounded below, so this
@@ -353,14 +370,9 @@ window.portfolioData = {
                         return true;
                     }
 
-                    console.warn(
-                        `Chat backend health check returned ${response.status} (attempt ${attempt})`
-                    );
+                    lastFailure = `returned ${response.status}`;
                 } catch (error) {
-                    console.warn(
-                        `Chat backend unreachable (attempt ${attempt}):`,
-                        error.name === 'AbortError' ? 'request timed out' : error.message
-                    );
+                    lastFailure = error.name === 'AbortError' ? 'request timed out' : error.message;
                 } finally {
                     clearTimeout(requestTimer);
                 }
@@ -383,12 +395,20 @@ window.portfolioData = {
                 this.isChatOnline = false;
                 if (showWaking) this.isChatWaking = true;
 
+                // Back off instead of retrying on a fixed cadence: every failed
+                // probe counts against the free host's rate limit, which only
+                // makes the wake-up slower.
+                const backoff = Math.min(intervalMs * 2 ** (attempt - 1), 20000);
                 await new Promise((resolve) =>
-                    setTimeout(resolve, Math.min(intervalMs, Math.max(0, deadline - Date.now())))
+                    setTimeout(resolve, Math.min(backoff, Math.max(0, deadline - Date.now())))
                 );
             }
 
-            console.warn(`Chat backend still offline after ${attempt} attempts`);
+            // One summary instead of a warning per attempt: the retries are
+            // expected while a sleeping backend wakes.
+            console.warn(
+                `Chat backend still offline after ${attempt} attempts (last: ${lastFailure || 'unknown'})`
+            );
             this.isChatOnline = false;
             this.isChatWaking = false;
             return false;
@@ -413,14 +433,13 @@ window.portfolioData = {
             document.documentElement.classList.add('dark');
         }
 
-        // Check chat backend health
-        this.checkChatHealth();
-
-        // Re-check when the chat is opened, in case the backend was still asleep
-        // (or unreachable) when the page first loaded.
+        // Probe the backend when the chat is opened, not on page load. The free
+        // host wakes on any request, and a cold start makes the first probes
+        // fail: doing that for every visitor's page load turned a sleeping
+        // instance into a burst of failed health checks.
         if (typeof this.$watch === 'function') {
             this.$watch('chatOpen', (isOpen) => {
-                if (isOpen && !this.isChatOnline) {
+                if (isOpen && (!this.isChatOnline || !this.healthCheckedOnce)) {
                     this.checkChatHealth();
                 }
             });

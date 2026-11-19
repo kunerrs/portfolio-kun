@@ -55,7 +55,12 @@ function json(body, status, origin, extraHeaders = {}) {
 // bursts with a 429 challenge page that makes the chat look offline.
 const HEALTH_FRESH_MS = 30 * 1000;
 const HEALTH_STALE_MS = 2 * 60 * 1000;
+// While the free host wakes up its CDN answers with a challenge (a 429 with
+// cf-mitigated: challenge). Probing again during that window only extends the
+// block, so answer from the recorded failure until it has passed.
+const HEALTH_FAILURE_BACKOFF_MS = 20 * 1000;
 let healthMemo = { at: 0, body: null };
+let healthFailure = { at: 0, status: 0 };
 let healthInFlight = null;
 
 async function fetchHealthPayload(upstreamBase) {
@@ -63,13 +68,20 @@ async function fetchHealthPayload(upstreamBase) {
     if (!healthInFlight) {
         healthInFlight = (async () => {
             const response = await fetch(`${upstreamBase}/health`, { redirect: 'manual' });
-            if (!response.ok) return { ok: false, status: response.status };
+            if (!response.ok) {
+                healthFailure = { at: Date.now(), status: response.status };
+                return { ok: false, status: response.status };
+            }
 
             const payload = await response.json();
             healthMemo = { at: Date.now(), body: payload };
+            healthFailure = { at: 0, status: 0 };
             return { ok: true, payload };
         })()
-            .catch((error) => ({ ok: false, status: 0, error }))
+            .catch((error) => {
+                healthFailure = { at: Date.now(), status: 0 };
+                return { ok: false, status: 0, error };
+            })
             .finally(() => {
                 healthInFlight = null;
             });
@@ -83,11 +95,16 @@ async function handleHealth(env, origin) {
         return json(healthMemo.body, 200, origin, { 'X-Health-Cache': 'hit' });
     }
 
-    const upstreamBase = (env.UPSTREAM || DEFAULT_UPSTREAM).replace(/\/+$/, '');
-    const result = await fetchHealthPayload(upstreamBase);
+    const backingOff =
+        healthFailure.at && Date.now() - healthFailure.at < HEALTH_FAILURE_BACKOFF_MS;
 
-    if (result.ok) {
-        return json(result.payload, 200, origin, { 'X-Health-Cache': 'miss' });
+    if (!backingOff) {
+        const upstreamBase = (env.UPSTREAM || DEFAULT_UPSTREAM).replace(/\/+$/, '');
+        const result = await fetchHealthPayload(upstreamBase);
+
+        if (result.ok) {
+            return json(result.payload, 200, origin, { 'X-Health-Cache': 'miss' });
+        }
     }
 
     // A short block should not take the chat down: keep answering with the last
@@ -97,10 +114,10 @@ async function handleHealth(env, origin) {
     }
 
     return json(
-        { status: 'error', message: 'Chat backend unavailable', upstreamStatus: result.status },
+        { status: 'error', message: 'Chat backend unavailable', upstreamStatus: healthFailure.status },
         503,
         origin,
-        { 'Retry-After': '30' }
+        { 'Retry-After': String(HEALTH_FAILURE_BACKOFF_MS / 1000) }
     );
 }
 
@@ -161,6 +178,20 @@ export default {
             });
         } catch (error) {
             return json({ error: 'Chat backend unreachable' }, 502, origin);
+        }
+
+        // The free host's CDN serves an HTML challenge page while the instance
+        // wakes. Passing that through would make the JSON client fail to parse
+        // it, so report a retryable error instead.
+        const upstreamType = upstreamResponse.headers.get('content-type') || '';
+        if (upstreamResponse.status >= 400 && upstreamType.includes('text/html')) {
+            if (upstreamResponse.body) await upstreamResponse.body.cancel().catch(() => {});
+            return json(
+                { error: 'Chat backend is starting up. Please try again in a moment.', retryAfter: 20 },
+                503,
+                origin,
+                { 'Retry-After': '20' }
+            );
         }
 
         const response = new Response(upstreamResponse.body, {
