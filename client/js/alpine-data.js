@@ -392,6 +392,14 @@ window.portfolioData = {
         }
     },
     init() {
+        // x-for builds the tiles during this pass, so reveal them on the next flush.
+        const startReveal = () => this.revealTiles();
+        if (typeof this.$nextTick === 'function') {
+            this.$nextTick(startReveal);
+        } else {
+            setTimeout(startReveal, 0);
+        }
+
         // Check if user has a saved preference, otherwise use system preference
         const savedDarkMode = localStorage.getItem('darkMode');
         if (savedDarkMode !== null) {
@@ -449,6 +457,48 @@ window.portfolioData = {
                 }
             }
         });
+    },
+    // Reveal each tile once, the first time it reaches the trigger line. Tied to
+    // scroll rather than load so the grid animates when it is actually looked at,
+    // and the listener goes away once every tile has been shown.
+    revealTiles() {
+        const tiles = Array.from(document.querySelectorAll('.bento > article'));
+        if (!tiles.length) return;
+
+        // Deliberately not an IntersectionObserver: a flick of the wheel or a jump
+        // link can carry a whole row from below the fold to above it between
+        // frames, and an observer reports nothing for an element that is never
+        // sampled as intersecting, leaving that row stuck invisible for good.
+        let queued = false;
+
+        const revealUnseen = () => {
+            queued = false;
+            const triggerLine = window.innerHeight * 0.88;
+            let belowLine = 0;
+
+            tiles.forEach((tile) => {
+                if (tile.classList.contains('is-revealed')) return;
+                if (tile.getBoundingClientRect().top >= triggerLine) {
+                    belowLine += 1;
+                    return;
+                }
+                tile.classList.add('is-revealed');
+            });
+
+            if (belowLine > 0) return;
+            window.removeEventListener('scroll', schedule);
+            window.removeEventListener('resize', schedule);
+        };
+
+        function schedule() {
+            if (queued) return;
+            queued = true;
+            requestAnimationFrame(revealUnseen);
+        }
+
+        window.addEventListener('scroll', schedule, { passive: true });
+        window.addEventListener('resize', schedule, { passive: true });
+        revealUnseen();
     },
     toggleDarkMode() {
         this.darkMode = !this.darkMode;

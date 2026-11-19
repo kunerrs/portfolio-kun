@@ -199,6 +199,36 @@ body {
     overflow: hidden;
 }
 
+/* Tiles rise into place once as the section is reached. The hidden state lives
+   behind the motion query, so a visitor who asks for less motion sees the grid
+   immediately and a page whose script never runs is never left blank. */
+@media (prefers-reduced-motion: no-preference) {
+    .bento > article {
+        opacity: 0;
+        transform: translateY(0.75rem);
+        transition: opacity 0.55s ease-out, transform 0.55s ease-out, box-shadow 0.2s ease-out;
+    }
+
+    .bento > article.is-revealed {
+        opacity: 1;
+        transform: none;
+    }
+
+    /* One step per tile, so a row reads left to right instead of popping as one.
+       Only opacity and transform wait; the hover shadow stays immediate. */
+    .bento > article.is-revealed:nth-of-type(2) {
+        transition-delay: 80ms, 80ms, 0s;
+    }
+
+    .bento > article.is-revealed:nth-of-type(3) {
+        transition-delay: 160ms, 160ms, 0s;
+    }
+
+    .bento > article.is-revealed:nth-of-type(4) {
+        transition-delay: 240ms, 240ms, 0s;
+    }
+}
+
 @media (min-width: 640px) {
     .bento {
         grid-template-columns: repeat(2, minmax(0, 1fr));
