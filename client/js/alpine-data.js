@@ -184,12 +184,8 @@ window.portfolioData = {
     async retryMessage(message) {
         if (!message || !message.retryText || this.isTyping || this.isCooldown) return;
 
-        if (!this.isChatOnline) {
-            alert(this.isChatWaking
-                ? 'The chat server is waking up. Please try again in a moment.'
-                : 'Chat is currently offline. Please try again later.');
-            return;
-        }
+        // No online check here: the worker waits out a sleeping backend, so a
+        // retry is worth attempting even while the status still says offline.
 
         // Drop the failure bubble so the reply replaces it instead of piling up.
         const index = this.chatMessages.indexOf(message);
@@ -252,6 +248,11 @@ window.portfolioData = {
                 this.checkChatHealth({ timeoutMs: 15000, intervalMs: 3000 });
                 return;
             }
+
+            // A real reply means the backend is up, whatever an in-flight health
+            // check concluded while it was waking.
+            this.isChatOnline = true;
+            this.isChatWaking = false;
 
             // Sanitize bot response to prevent XSS attacks
             const sanitizedReply = DOMPurify.sanitize(data.reply || 'Sorry, I couldn\'t process that.', {

@@ -59,9 +59,30 @@ const HEALTH_STALE_MS = 2 * 60 * 1000;
 // cf-mitigated: challenge). Probing again during that window only extends the
 // block, so answer from the recorded failure until it has passed.
 const HEALTH_FAILURE_BACKOFF_MS = 20 * 1000;
+// A sleeping instance answers with a challenge until it has booted, which can
+// take most of a minute, so a chat request waits and is replayed rather than
+// throwing away the visitor's message. The budget stays under the client's 45s
+// timeout so a failure is still reported before the browser gives up.
+const WAKE_RETRY_MS = 4 * 1000;
+const WAKE_BUDGET_MS = 35 * 1000;
 let healthMemo = { at: 0, body: null };
 let healthFailure = { at: 0, status: 0 };
 let healthInFlight = null;
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// The challenge page is HTML; the API itself always answers JSON.
+function isWakeChallenge(response) {
+    const type = response.headers.get('content-type') || '';
+    if (!type.includes('text/html')) return false;
+    if (response.headers.get('cf-mitigated') === 'challenge') return true;
+    return [429, 502, 503, 504].includes(response.status);
+}
+
+function noteUpstreamHealthy() {
+    healthMemo = { at: Date.now(), body: { status: 'ok', message: 'Server is running' } };
+    healthFailure = { at: 0, status: 0 };
+}
 
 async function fetchHealthPayload(upstreamBase) {
     // Share one in-flight request between concurrent callers.
@@ -166,33 +187,52 @@ export default {
         const clientIp = request.headers.get('CF-Connecting-IP');
         if (clientIp) headers.set('X-Forwarded-For', clientIp);
 
+        const body = ['GET', 'HEAD'].includes(request.method)
+            ? undefined
+            : await request.arrayBuffer();
+        const deadline = Date.now() + WAKE_BUDGET_MS;
+
         let upstreamResponse;
-        try {
-            upstreamResponse = await fetch(upstreamUrl, {
-                method: request.method,
-                headers,
-                body: ['GET', 'HEAD'].includes(request.method)
-                    ? undefined
-                    : await request.arrayBuffer(),
-                redirect: 'manual',
-            });
-        } catch (error) {
-            return json({ error: 'Chat backend unreachable' }, 502, origin);
+        for (;;) {
+            try {
+                upstreamResponse = await fetch(upstreamUrl, {
+                    method: request.method,
+                    headers,
+                    body,
+                    redirect: 'manual',
+                });
+            } catch (error) {
+                if (Date.now() + WAKE_RETRY_MS < deadline) {
+                    await sleep(WAKE_RETRY_MS);
+                    continue;
+                }
+                return json({ error: 'Chat backend unreachable' }, 502, origin);
+            }
+
+            // The challenge never reached the app, so replaying the same body is
+            // safe and saves the visitor from retyping their question.
+            if (isWakeChallenge(upstreamResponse)) {
+                if (upstreamResponse.body) await upstreamResponse.body.cancel().catch(() => {});
+
+                if (Date.now() + WAKE_RETRY_MS < deadline) {
+                    await sleep(WAKE_RETRY_MS);
+                    continue;
+                }
+
+                return json(
+                    { error: 'Chat backend is starting up. Please try again in a moment.', retryAfter: 20 },
+                    503,
+                    origin,
+                    { 'Retry-After': '20' }
+                );
+            }
+
+            break;
         }
 
-        // The free host's CDN serves an HTML challenge page while the instance
-        // wakes. Passing that through would make the JSON client fail to parse
-        // it, so report a retryable error instead.
-        const upstreamType = upstreamResponse.headers.get('content-type') || '';
-        if (upstreamResponse.status >= 400 && upstreamType.includes('text/html')) {
-            if (upstreamResponse.body) await upstreamResponse.body.cancel().catch(() => {});
-            return json(
-                { error: 'Chat backend is starting up. Please try again in a moment.', retryAfter: 20 },
-                503,
-                origin,
-                { 'Retry-After': '20' }
-            );
-        }
+        // An answered request proves the backend is awake, so stop reporting the
+        // stale failure from the health cache.
+        if (upstreamResponse.status < 500) noteUpstreamHealthy();
 
         const response = new Response(upstreamResponse.body, {
             status: upstreamResponse.status,
