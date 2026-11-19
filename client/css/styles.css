@@ -3,12 +3,20 @@ body {
 }
 
 /* Dark mode text improvements */
-/* Dark-mode baseline text, scoped so utilities like text-blue-400 still win. */
-.dark :where(p) {
+/* Dark-mode baseline text. Anything that brings its own dark:text-* colour is
+   left alone; every other paragraph or list item falls back to a light grey.
+
+   The :not() is what makes the guard hold. :where() adds no specificity, so with
+   a bare `.dark :where(p)` a plain colour utility (text-gray-700) tied at one
+   class and won on source order, because the Tailwind CDN injects its styles
+   after this file. That tie is how the hero intro stayed dark on the dark
+   background. The attribute test lifts this rule above a plain utility, and
+   elements that do carry a dark: variant are excluded from it altogether. */
+.dark :where(p):not([class*="dark:text-"]) {
     color: rgb(229 231 235); /* gray-200 */
 }
 
-.dark :where(li) {
+.dark :where(li):not([class*="dark:text-"]) {
     color: rgb(229 231 235); /* gray-200 */
 }
 
