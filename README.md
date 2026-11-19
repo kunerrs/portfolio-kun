@@ -36,7 +36,6 @@ portfolio-kun/
 │   ├── js/                # JavaScript files
 │   │   ├── alpine-data.js # Alpine.js state and functions
 │   │   └── app.js         # Particle animations
-│   ├── partials/          # HTML partials
 │   └── index.html         # Main HTML file
 │
 └── server/                # Backend server
