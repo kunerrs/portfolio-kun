@@ -67,7 +67,8 @@
     <div class="w-full lg:w-3/4">
 
     <!-- Navigation -->
-    <nav class="fixed top-0 left-0 w-full lg:w-3/4 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md shadow-sm z-50 transition-colors duration-300">
+    <nav class="fixed top-0 left-0 w-full lg:w-3/4 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md z-50 transition-[background-color,box-shadow] duration-300"
+         :class="{ 'shadow-sm': navScrolled }">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex-shrink-0">

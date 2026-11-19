@@ -15,6 +15,7 @@ let apiBaseUrl = ['localhost', '127.0.0.1'].includes(window.location.hostname)
 // Alpine.js data configuration
 window.portfolioData = {
     activeSection: 'about',
+    navScrolled: false,
     mobileMenuOpen: false,
     chatOpen: false,
     expandedRoles: {},
@@ -458,8 +459,14 @@ window.portfolioData = {
             }
         }, 30000);
 
+        // The navbar only picks up its bottom shadow once the page has moved, so
+        // the hero and the nav read as one surface at rest. A browser that
+        // restores a scroll position on reload starts in the right state.
+        this.navScrolled = window.scrollY > 8;
+
         // Scroll spy - update active section based on scroll position
         window.addEventListener('scroll', () => {
+            this.navScrolled = window.scrollY > 8;
             const sections = ['about', 'projects', 'experience', 'skills', 'education', 'contact'];
             const scrollPosition = window.scrollY + 100; // Offset for navbar
 
