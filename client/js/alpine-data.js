@@ -51,7 +51,7 @@ window.portfolioData = {
             description: 'Real estate web application complete with CMS and marketing campaign functionality.',
             tags: ['Vue.js', 'FeathersJS', 'MongoDB'],
             tagColor: 'blue',
-            image: 'assets/projects/aqq-1.png',
+            image: 'assets/projects/aqq-1.webp',
             demo: 'https://aqqire.com'
         },
         {
@@ -59,7 +59,7 @@ window.portfolioData = {
             description: 'Information site about calibration (engineering) with blogs and educational resources.',
             tags: ['WordPress', 'Elementor'],
             tagColor: 'purple',
-            image: 'assets/projects/calibration-awareness-1.png',
+            image: 'assets/projects/calibration-awareness-1.webp',
             demo: 'https://calibrationawareness.com'
         },
         {
@@ -67,7 +67,7 @@ window.portfolioData = {
             description: 'E-commerce platform for custom furniture skins and designs.',
             tags: ['Shopify', 'Liquid', 'JavaScript'],
             tagColor: 'green',
-            image: 'assets/projects/couchskins-1.png',
+            image: 'assets/projects/couchskins-1.webp',
             demo: 'https://couchskins.com'
         },
         {
@@ -75,7 +75,7 @@ window.portfolioData = {
             description: 'Pest control management system with invoicing and billing functionality.',
             tags: ['CodeIgniter', 'Bootstrap', 'MySQL'],
             tagColor: 'blue',
-            image: 'assets/projects/propco-1.png',
+            image: 'assets/projects/propco-1.webp',
             demo: 'https://apps.propco.services/propco/login'
         }
     ],
