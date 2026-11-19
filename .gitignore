@@ -42,3 +42,6 @@ Thumbs.db
 Gregory_Kun_Resume.docx
 Resume_in_txt.txt
 other_xp.txt
+
+# Wrangler local build state
+worker/.wrangler/
