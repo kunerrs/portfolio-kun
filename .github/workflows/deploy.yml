@@ -25,6 +25,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Stamp bundle version
+        run: |
+          set -euo pipefail
+          cd client
+          # Fail loudly if the tag ever loses its placeholder, rather than shipping
+          # a page that can never be cache-busted.
+          grep -q 'alpine-data\.js?v=' index.html
+          # The version is a hash of the script plus this page, so a deploy cannot
+          # ship a page that points at an old bundle. The placeholder is swapped
+          # back to a fixed token before hashing, so re-runs produce the same value.
+          version=$(
+            {
+              cat js/alpine-data.js
+              sed 's#alpine-data\.js?v=[0-9a-z.]*#alpine-data.js?v=TOKEN#g' index.html
+            } | sha256sum | cut -c1-10
+          )
+          sed -i "s#alpine-data\.js?v=[0-9a-z.]*#alpine-data.js?v=$version#g" index.html
+          grep -q "src=\"./js/alpine-data.js?v=$version\"" index.html
+          ! grep -q 'alpine-data\.js?v=TOKEN' index.html
+          echo "Stamped alpine-data.js?v=$version"
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 

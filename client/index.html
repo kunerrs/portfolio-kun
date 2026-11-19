@@ -44,8 +44,10 @@
     <!-- DOMPurify for XSS Protection -->
     <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
 
-    <!-- Alpine.js Data (must load before Alpine.js) -->
-    <script src="./js/alpine-data.js?v=18"></script>
+    <!-- Alpine.js Data (must load before Alpine.js). The deploy workflow swaps the
+         version below for a hash of this script and this page, so nothing needs
+         bumping by hand. -->
+    <script src="./js/alpine-data.js?v=dev"></script>
 
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -1080,22 +1082,23 @@
 
     <!-- Pages caches this page for ten minutes, so a visitor can keep running an
          older bundle after a deploy. Compare the bundle this page loaded with the
-         one the server currently points at, and reload once if they differ. -->
+         one the server currently points at, and reload once if they differ. The
+         version is the content hash written in by the deploy workflow. -->
     <script>
         (function () {
             var tag = document.querySelector('script[src*="alpine-data.js"]');
-            var loaded = tag && /[?&]v=(\d+)/.exec(tag.getAttribute('src') || '');
+            var loaded = tag && /[?&]v=([^&]+)/.exec(tag.getAttribute('src') || '');
             if (!loaded) return;
 
-            var loadedVersion = Number(loaded[1]);
+            var loadedVersion = loaded[1];
 
             function checkForNewBundle() {
                 // The timestamp skips both the browser cache and the CDN copy.
                 fetch('./index.html?ts=' + Date.now(), { cache: 'no-store' })
                     .then(function (response) { return response.ok ? response.text() : ''; })
                     .then(function (html) {
-                        var live = /alpine-data\.js\?v=(\d+)/.exec(html);
-                        if (!live || Number(live[1]) <= loadedVersion) return;
+                        var live = /alpine-data\.js\?v=([^&"']+)/.exec(html);
+                        if (!live || live[1] === loadedVersion) return;
 
                         // Reloading would throw away an open conversation.
                         var chat = window.portfolioData;

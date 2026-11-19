@@ -31,9 +31,10 @@ curl https://portfolio-kun-chat.<your-subdomain>.workers.dev/health
 
 ## Point the site at it
 
-Set `DEPLOYED_API_URL` in `client/js/alpine-data.js` to the worker URL, then bump
-the `alpine-data.js?v=` number in `client/index.html` so browsers fetch the new
-file. Local development still uses `http://localhost:3000`.
+Set `DEPLOYED_API_URL` in `client/js/alpine-data.js` to the worker URL. No manual
+version bump: the Pages workflow replaces the `?v=dev` placeholder in
+`client/index.html` with a hash of the script and page, so browsers fetch the
+new file. Local development still uses `http://localhost:3000`.
 
 ## Configuration
 
