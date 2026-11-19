@@ -171,6 +171,32 @@ window.portfolioData = {
 
         const userMessage = sanitizedInput;
         this.chatInput = '';
+
+        // Scroll to bottom after user message
+        setTimeout(() => {
+            document.querySelector('.chat-messages').scrollTop = document.querySelector('.chat-messages').scrollHeight;
+        }, 100);
+
+        await this.requestReply(userMessage);
+    },
+    // Re-send the question behind a failed reply without retyping it.
+    async retryMessage(message) {
+        if (!message || !message.retryText || this.isTyping || this.isCooldown) return;
+
+        if (!this.isChatOnline) {
+            alert(this.isChatWaking
+                ? 'The chat server is waking up. Please try again in a moment.'
+                : 'Chat is currently offline. Please try again later.');
+            return;
+        }
+
+        // Drop the failure bubble so the reply replaces it instead of piling up.
+        const index = this.chatMessages.indexOf(message);
+        if (index !== -1) this.chatMessages.splice(index, 1);
+
+        await this.requestReply(message.retryText);
+    },
+    async requestReply(userMessage) {
         this.isTyping = true;
 
         // Activate cooldown
@@ -180,11 +206,6 @@ window.portfolioData = {
         }, this.cooldownTime);
 
         console.log('Sending to backend:', userMessage);
-
-        // Scroll to bottom after user message
-        setTimeout(() => {
-            document.querySelector('.chat-messages').scrollTop = document.querySelector('.chat-messages').scrollHeight;
-        }, 100);
 
         const chatController = new AbortController();
         const chatTimer = setTimeout(() => chatController.abort(), CHAT_TIMEOUT_MS);
@@ -238,13 +259,15 @@ window.portfolioData = {
             // The request never completed, so refresh the online state for the UI.
             this.checkChatHealth({ timeoutMs: 15000, intervalMs: 3000 });
 
-            // Add error message
+            // Add error message, flagged so the UI can offer a retry.
             this.chatMessages.push({
                 text: timedOut
                     ? 'That answer took too long, so I stopped waiting. Please try again.'
                     : 'Sorry, I\'m having trouble connecting to the server. Please try again in a moment.',
                 sender: 'bot',
-                timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                failed: true,
+                retryText: userMessage
             });
         } finally {
             clearTimeout(chatTimer);
