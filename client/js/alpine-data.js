@@ -1,6 +1,8 @@
 // Use the local backend during local development, the deployed backend otherwise
 const LOCAL_API_URL = 'http://localhost:3000';
-const DEPLOYED_API_URL = 'https://portfolio-kun.onrender.com';
+// Requests go through the Cloudflare Worker proxy (see worker/) instead of
+// onrender.com: ad-blocker filter lists block that shared domain outright.
+const DEPLOYED_API_URL = 'https://portfolio-kun-chat.kunerrs.workers.dev';
 
 let apiBaseUrl = ['localhost', '127.0.0.1'].includes(window.location.hostname)
     ? LOCAL_API_URL
