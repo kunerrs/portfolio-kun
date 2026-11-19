@@ -29,22 +29,31 @@ jobs:
         run: |
           set -euo pipefail
           cd client
-          # Fail loudly if the tag ever loses its placeholder, rather than shipping
+          # Fail loudly if a tag ever loses its placeholder, rather than shipping
           # a page that can never be cache-busted.
           grep -q 'alpine-data\.js?v=' index.html
-          # The version is a hash of the script plus this page, so a deploy cannot
-          # ship a page that points at an old bundle. The placeholder is swapped
+          grep -q 'styles\.css?v=' index.html
+          # The version is a hash of the assets plus this page, so a deploy cannot
+          # ship a page that points at an old bundle or an old stylesheet, and a
+          # CSS-only change still gets a fresh URL. Both placeholders are swapped
           # back to a fixed token before hashing, so re-runs produce the same value.
           version=$(
             {
               cat js/alpine-data.js
-              sed 's#alpine-data\.js?v=[0-9a-z.]*#alpine-data.js?v=TOKEN#g' index.html
+              cat css/styles.css
+              sed -e 's#alpine-data\.js?v=[0-9a-z.]*#alpine-data.js?v=TOKEN#g' \
+                  -e 's#styles\.css?v=[0-9a-z.]*#styles.css?v=TOKEN#g' \
+                  index.html
             } | sha256sum | cut -c1-10
           )
-          sed -i "s#alpine-data\.js?v=[0-9a-z.]*#alpine-data.js?v=$version#g" index.html
+          sed -i \
+            -e "s#alpine-data\.js?v=[0-9a-z.]*#alpine-data.js?v=$version#g" \
+            -e "s#styles\.css?v=[0-9a-z.]*#styles.css?v=$version#g" \
+            index.html
           grep -q "src=\"./js/alpine-data.js?v=$version\"" index.html
-          ! grep -q 'alpine-data\.js?v=TOKEN' index.html
-          echo "Stamped alpine-data.js?v=$version"
+          grep -q "href=\"./css/styles.css?v=$version\"" index.html
+          ! grep -q 'v=TOKEN' index.html
+          echo "Stamped alpine-data.js?v=$version and styles.css?v=$version"
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
