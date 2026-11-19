@@ -279,8 +279,16 @@ window.portfolioData = {
         let attempt = 0;
 
         try {
-            while (true) {
+            // Hard stop at the deadline: each attempt is bounded below, so this
+            // loop can never hang and leave the UI on "Waking up the server...".
+            while (Date.now() < deadline) {
                 attempt += 1;
+
+                // A cold-starting host can hold a request open for minutes, so
+                // abort each attempt instead of waiting for the browser to give up.
+                const controller = new AbortController();
+                const requestBudget = Math.max(1000, Math.min(10000, deadline - Date.now()));
+                const requestTimer = setTimeout(() => controller.abort(), requestBudget);
 
                 try {
                     // No custom headers here: that keeps this a simple request,
@@ -288,6 +296,7 @@ window.portfolioData = {
                     const response = await fetch(`${apiBaseUrl}/health`, {
                         method: 'GET',
                         cache: 'no-store',
+                        signal: controller.signal,
                     });
 
                     if (response.ok) {
@@ -300,7 +309,12 @@ window.portfolioData = {
                         `Chat backend health check returned ${response.status} (attempt ${attempt})`
                     );
                 } catch (error) {
-                    console.warn(`Chat backend unreachable (attempt ${attempt}):`, error.message);
+                    console.warn(
+                        `Chat backend unreachable (attempt ${attempt}):`,
+                        error.name === 'AbortError' ? 'request timed out' : error.message
+                    );
+                } finally {
+                    clearTimeout(requestTimer);
                 }
 
                 // In local dev the backend may be stopped or on another port, so
@@ -311,22 +325,27 @@ window.portfolioData = {
                     continue;
                 }
 
-                if (Date.now() >= deadline) {
-                    console.warn(`Chat backend still offline after ${attempt} attempts`);
-                    this.isChatOnline = false;
-                    this.isChatWaking = false;
-                    return false;
-                }
+                if (Date.now() >= deadline) break;
 
                 // Still retrying, so the server is most likely cold-starting:
                 // show "waking up" rather than warning that chat is offline.
                 this.isChatOnline = false;
                 this.isChatWaking = true;
 
-                await new Promise((resolve) => setTimeout(resolve, intervalMs));
+                await new Promise((resolve) =>
+                    setTimeout(resolve, Math.min(intervalMs, Math.max(0, deadline - Date.now())))
+                );
             }
+
+            console.warn(`Chat backend still offline after ${attempt} attempts`);
+            this.isChatOnline = false;
+            this.isChatWaking = false;
+            return false;
         } finally {
             this.healthCheckInFlight = false;
+            // Whatever happened, never leave the chat advertising a wake-up
+            // that is no longer being attempted.
+            if (!this.isChatOnline) this.isChatWaking = false;
         }
     },
     init() {
