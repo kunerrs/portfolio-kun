@@ -47,3 +47,20 @@ new file. Local development still uses `http://localhost:3000`.
 The worker forwards the visitor IP in `X-Forwarded-For`; `server/server.js` runs
 with `trust proxy` set to one hop so the chat rate limit still applies per
 visitor rather than per proxy egress IP.
+
+## Keep the backend warm
+
+Render spins a free service down after 15 minutes without traffic, and the next
+request then waits about a minute for it to boot. The `[triggers]` block in
+`wrangler.toml` registers a Cron Trigger that requests `/health` every 10
+minutes, which keeps the service running and refreshes the worker's cached
+health answer.
+
+The schedule is deliberately not 24/7. Render gives each workspace 750 free
+instance hours a month and suspends free services until the next month when they
+run out; a continuous ping would use about 744. `*/10 0-4,12-23 * * *` runs 17
+hours a day in UTC (roughly 08:00-23:00 Eastern), about 520 hours a month.
+Visitors outside those hours still work, they just may wait out a boot.
+
+Cron Triggers run in UTC and can take up to 15 minutes to take effect after a
+deploy. Adjust the hours in `worker/wrangler.toml` and redeploy if needed.

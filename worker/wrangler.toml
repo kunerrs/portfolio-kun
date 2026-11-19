@@ -6,3 +6,11 @@ compatibility_date = "2026-11-18"
 [vars]
 UPSTREAM = "https://portfolio-kun.onrender.com"
 ALLOWED_ORIGINS = "https://kunerrs.github.io,null"
+
+# Keeps the free backend from spinning down (Render sleeps it after 15 idle
+# minutes). Every 10 minutes during 12:00-04:59 UTC, roughly 08:00-23:00
+# Eastern. Not 24/7 on purpose: pinging around the clock would use ~744 of the
+# 750 free instance hours Render grants per month, and going over suspends the
+# service until the next month. This is ~17 hours a day, about 520 hours a month.
+[triggers]
+crons = ["*/10 0-4,12-23 * * *"]

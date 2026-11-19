@@ -244,4 +244,14 @@ export default {
         response.headers.delete('content-length');
         return withCors(response, origin);
     },
+
+    // Cron keep-warm: Render spins a free service down after 15 idle minutes and
+    // takes about a minute to boot, so a ping every 10 minutes during the hours
+    // in wrangler.toml keeps it up with margin under that threshold. It goes
+    // through the same helper as the health route, so the cached answer stays
+    // fresh and a failure is recorded rather than thrown.
+    async scheduled(event, env = {}) {
+        const upstreamBase = (env.UPSTREAM || DEFAULT_UPSTREAM).replace(/\/+$/, '');
+        await fetchHealthPayload(upstreamBase);
+    },
 };
