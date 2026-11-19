@@ -267,7 +267,7 @@ window.portfolioData = {
 
         return html;
     },
-    async checkChatHealth({ timeoutMs = 60000, intervalMs = 4000 } = {}) {
+    async checkChatHealth({ timeoutMs = 60000, intervalMs = 4000, showWaking = true } = {}) {
         // Never run two checks at once (init, chat open, interval and retries
         // all funnel through here).
         if (this.healthCheckInFlight) return this.isChatOnline;
@@ -329,8 +329,11 @@ window.portfolioData = {
 
                 // Still retrying, so the server is most likely cold-starting:
                 // show "waking up" rather than warning that chat is offline.
+                // Passive background retries stay quiet: they advertise a wake-up
+                // they cannot make, which leaves a dead backend looking like it is
+                // booting forever instead of being offline.
                 this.isChatOnline = false;
-                this.isChatWaking = true;
+                if (showWaking) this.isChatWaking = true;
 
                 await new Promise((resolve) =>
                     setTimeout(resolve, Math.min(intervalMs, Math.max(0, deadline - Date.now())))
@@ -379,7 +382,7 @@ window.portfolioData = {
         // or drops mid-session brings the chat back without a page reload.
         setInterval(() => {
             if (!this.isChatOnline) {
-                this.checkChatHealth({ timeoutMs: 20000, intervalMs: 5000 });
+                this.checkChatHealth({ timeoutMs: 20000, intervalMs: 5000, showWaking: false });
             }
         }, 30000);
 
