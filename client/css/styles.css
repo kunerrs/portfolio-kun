@@ -333,6 +333,8 @@ body {
 }
 
 .timeline-dates {
+    /* Keeps the dates against the right edge even when they wrap below the track */
+    margin-left: auto;
     font-size: 0.8rem;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
@@ -486,6 +488,15 @@ body {
 
     .timeline-card {
         padding: 1rem 1.05rem 1.1rem;
+    }
+
+    /* Tighter metadata so the track and dates share a line on small phones */
+    .timeline-track {
+        letter-spacing: 0.1em;
+    }
+
+    .timeline-dates {
+        font-size: 0.76rem;
     }
 }
 
