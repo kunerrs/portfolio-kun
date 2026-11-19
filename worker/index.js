@@ -36,13 +36,71 @@ function withCors(response, origin) {
     });
 }
 
-function json(body, status, origin) {
+function json(body, status, origin, extraHeaders = {}) {
     return withCors(
         new Response(JSON.stringify(body), {
             status,
-            headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
+            headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-store',
+                ...extraHeaders,
+            },
         }),
         origin
+    );
+}
+
+// Health answers are reused for a short while so page loads cannot turn into a
+// burst of probes: the free host sits behind Cloudflare, which replies to
+// bursts with a 429 challenge page that makes the chat look offline.
+const HEALTH_FRESH_MS = 30 * 1000;
+const HEALTH_STALE_MS = 2 * 60 * 1000;
+let healthMemo = { at: 0, body: null };
+let healthInFlight = null;
+
+async function fetchHealthPayload(upstreamBase) {
+    // Share one in-flight request between concurrent callers.
+    if (!healthInFlight) {
+        healthInFlight = (async () => {
+            const response = await fetch(`${upstreamBase}/health`, { redirect: 'manual' });
+            if (!response.ok) return { ok: false, status: response.status };
+
+            const payload = await response.json();
+            healthMemo = { at: Date.now(), body: payload };
+            return { ok: true, payload };
+        })()
+            .catch((error) => ({ ok: false, status: 0, error }))
+            .finally(() => {
+                healthInFlight = null;
+            });
+    }
+
+    return healthInFlight;
+}
+
+async function handleHealth(env, origin) {
+    if (healthMemo.body && Date.now() - healthMemo.at < HEALTH_FRESH_MS) {
+        return json(healthMemo.body, 200, origin, { 'X-Health-Cache': 'hit' });
+    }
+
+    const upstreamBase = (env.UPSTREAM || DEFAULT_UPSTREAM).replace(/\/+$/, '');
+    const result = await fetchHealthPayload(upstreamBase);
+
+    if (result.ok) {
+        return json(result.payload, 200, origin, { 'X-Health-Cache': 'miss' });
+    }
+
+    // A short block should not take the chat down: keep answering with the last
+    // good result, and only report a failure once that has gone stale too.
+    if (healthMemo.body && Date.now() - healthMemo.at < HEALTH_STALE_MS) {
+        return json(healthMemo.body, 200, origin, { 'X-Health-Cache': 'stale' });
+    }
+
+    return json(
+        { status: 'error', message: 'Chat backend unavailable', upstreamStatus: result.status },
+        503,
+        origin,
+        { 'Retry-After': '30' }
     );
 }
 
@@ -74,6 +132,10 @@ export default {
         const url = new URL(request.url);
         if (!PROXY_PATHS.has(url.pathname)) {
             return json({ error: 'Not found' }, 404, origin);
+        }
+
+        if (request.method === 'GET' && url.pathname === '/health') {
+            return handleHealth(env, origin);
         }
 
         const upstreamBase = (env.UPSTREAM || DEFAULT_UPSTREAM).replace(/\/+$/, '');

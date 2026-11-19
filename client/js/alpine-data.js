@@ -343,6 +343,16 @@ window.portfolioData = {
                         return true;
                     }
 
+                    // A 429 comes from the CDN in front of the backend, not the
+                    // backend itself, so the host is up and only throttling probes.
+                    // Retrying every few seconds just extends the block.
+                    if (response.status === 429) {
+                        console.warn('Chat backend health check was rate limited; backing off.');
+                        this.isChatOnline = true;
+                        this.isChatWaking = false;
+                        return true;
+                    }
+
                     console.warn(
                         `Chat backend health check returned ${response.status} (attempt ${attempt})`
                     );
