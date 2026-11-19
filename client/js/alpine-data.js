@@ -24,9 +24,6 @@ window.portfolioData = {
         this.expandedRoles[key] = !this.expandedRoles[key];
     },
     darkMode: false,
-    currentProject: 0,
-    isProjectActive: true,
-    isSliding: false,
     chatMessages: [],
     chatInput: '',
     isTyping: false,
@@ -55,17 +52,7 @@ window.portfolioData = {
             tags: ['Vue.js', 'FeathersJS', 'MongoDB'],
             tagColor: 'blue',
             image: 'assets/projects/aqq-1.png',
-            demo: 'https://aqqire.com',
-            github: '#'
-        },
-        {
-            title: 'Aqqire',
-            description: 'Real estate web application complete with CMS and marketing campaign functionality.',
-            tags: ['Vue.js', 'FeathersJS', 'MongoDB'],
-            tagColor: 'blue',
-            image: 'assets/projects/aqq-2.png',
-            demo: 'https://aqqire.com',
-            github: '#'
+            demo: 'https://aqqire.com'
         },
         {
             title: 'Calibration Awareness',
@@ -73,17 +60,7 @@ window.portfolioData = {
             tags: ['WordPress', 'Elementor'],
             tagColor: 'purple',
             image: 'assets/projects/calibration-awareness-1.png',
-            demo: 'https://calibrationawareness.com',
-            github: '#'
-        },
-        {
-            title: 'Calibration Awareness',
-            description: 'Information site about calibration (engineering) with blogs and educational resources.',
-            tags: ['WordPress', 'Elementor'],
-            tagColor: 'purple',
-            image: 'assets/projects/calibration-awareness-2.png',
-            demo: 'https://calibrationawareness.com',
-            github: '#'
+            demo: 'https://calibrationawareness.com'
         },
         {
             title: 'CouchSkins',
@@ -91,26 +68,15 @@ window.portfolioData = {
             tags: ['Shopify', 'Liquid', 'JavaScript'],
             tagColor: 'green',
             image: 'assets/projects/couchskins-1.png',
-            demo: 'https://couchskins.com',
-            github: '#'
+            demo: 'https://couchskins.com'
         },
         {
             title: 'Professional Pest Control Operator',
-            description: 'Pest Control Management System with invoicing and billing functionality.',
+            description: 'Pest control management system with invoicing and billing functionality.',
             tags: ['CodeIgniter', 'Bootstrap', 'MySQL'],
             tagColor: 'blue',
             image: 'assets/projects/propco-1.png',
-            demo: 'https://apps.propco.services/propco/login',
-            github: '#'
-        },
-        {
-            title: 'Professional Pest Control Operator',
-            description: 'Pest Control Management System with invoicing and billing functionality.',
-            tags: ['CodeIgniter', 'Bootstrap', 'MySQL'],
-            tagColor: 'blue',
-            image: 'assets/projects/propco-2.png',
-            demo: 'https://apps.propco.services/propco/login',
-            github: '#'
+            demo: 'https://apps.propco.services/propco/login'
         }
     ],
     async sendMessage() {
@@ -497,45 +463,6 @@ window.portfolioData = {
         this.activeSection = section;
         document.getElementById(section).scrollIntoView({ behavior: 'smooth' });
         this.mobileMenuOpen = false;
-    },
-    nextProject() {
-        if (this.isSliding) return; // Prevent multiple clicks
-        this.isSliding = true;
-
-        // 1. Fade out current project
-        this.isProjectActive = false;
-
-        // 2. After fade out, change project
-        setTimeout(() => {
-            this.currentProject = (this.currentProject + 1) % this.projects.length;
-
-            // 3. Fade in new project
-            setTimeout(() => {
-                this.isProjectActive = true;
-                this.isSliding = false;
-            }, 50);
-        }, 600); // Match CSS transition duration
-    },
-    prevProject() {
-        if (this.isSliding) return; // Prevent multiple clicks
-        this.isSliding = true;
-
-        // 1. Fade out current project
-        this.isProjectActive = false;
-
-        // 2. After fade out, change project
-        setTimeout(() => {
-            this.currentProject = (this.currentProject - 1 + this.projects.length) % this.projects.length;
-
-            // 3. Fade in new project
-            setTimeout(() => {
-                this.isProjectActive = true;
-                this.isSliding = false;
-            }, 50);
-        }, 600); // Match CSS transition duration
-    },
-    getProjectIndex(offset) {
-        return (this.currentProject + offset + this.projects.length) % this.projects.length;
     },
     openImageModal(imageSrc) {
         this.modalImageSrc = imageSrc;
