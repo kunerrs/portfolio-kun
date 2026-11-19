@@ -199,17 +199,25 @@ body {
     overflow: hidden;
 }
 
-/* Tiles rise into place once as the section is reached. The hidden state lives
-   behind the motion query, so a visitor who asks for less motion sees the grid
-   immediately and a page whose script never runs is never left blank. */
+/* Tiles and timeline entries rise into place once as they are reached. The
+   hidden state lives behind the motion query, so a visitor who asks for less
+   motion sees everything immediately and a page whose script never runs is
+   never left blank. */
 @media (prefers-reduced-motion: no-preference) {
-    .bento > article {
+    .bento > article,
+    .timeline-entry {
         opacity: 0;
         transform: translateY(0.75rem);
+        transition: opacity 0.55s ease-out, transform 0.55s ease-out;
+    }
+
+    /* Tiles also ease their hover shadow, so that transition joins the list. */
+    .bento > article {
         transition: opacity 0.55s ease-out, transform 0.55s ease-out, box-shadow 0.2s ease-out;
     }
 
-    .bento > article.is-revealed {
+    .bento > article.is-revealed,
+    .timeline-entry.is-revealed {
         opacity: 1;
         transform: none;
     }

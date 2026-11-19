@@ -35,7 +35,7 @@ window.portfolioData = {
     cooldownTime: 3000, // 3 seconds cooldown between messages
     maxChatLength: 120,
     imageModalOpen: false,
-    modalImageSrc: '',
+    modalProject: null,
     get chatCharCount() {
         return this.chatInput.length;
     },
@@ -392,8 +392,11 @@ window.portfolioData = {
         }
     },
     init() {
-        // x-for builds the tiles during this pass, so reveal them on the next flush.
-        const startReveal = () => this.revealTiles();
+        // x-for builds the tiles during this pass, so reveal on the next flush.
+        const startReveal = () => {
+            this.revealOnScroll('.bento > article');
+            this.revealOnScroll('.timeline-entry');
+        };
         if (typeof this.$nextTick === 'function') {
             this.$nextTick(startReveal);
         } else {
@@ -458,12 +461,12 @@ window.portfolioData = {
             }
         });
     },
-    // Reveal each tile once, the first time it reaches the trigger line. Tied to
-    // scroll rather than load so the grid animates when it is actually looked at,
-    // and the listener goes away once every tile has been shown.
-    revealTiles() {
-        const tiles = Array.from(document.querySelectorAll('.bento > article'));
-        if (!tiles.length) return;
+    // Reveal each item once, the first time it reaches the trigger line. Tied to
+    // scroll rather than load so the group animates when it is actually looked
+    // at, and the listener goes away once every item has been shown.
+    revealOnScroll(selector) {
+        const items = Array.from(document.querySelectorAll(selector));
+        if (!items.length) return;
 
         // Deliberately not an IntersectionObserver: a flick of the wheel or a jump
         // link can carry a whole row from below the fold to above it between
@@ -476,13 +479,13 @@ window.portfolioData = {
             const triggerLine = window.innerHeight * 0.88;
             let belowLine = 0;
 
-            tiles.forEach((tile) => {
-                if (tile.classList.contains('is-revealed')) return;
-                if (tile.getBoundingClientRect().top >= triggerLine) {
+            items.forEach((item) => {
+                if (item.classList.contains('is-revealed')) return;
+                if (item.getBoundingClientRect().top >= triggerLine) {
                     belowLine += 1;
                     return;
                 }
-                tile.classList.add('is-revealed');
+                item.classList.add('is-revealed');
             });
 
             if (belowLine > 0) return;
@@ -514,15 +517,17 @@ window.portfolioData = {
         document.getElementById(section).scrollIntoView({ behavior: 'smooth' });
         this.mobileMenuOpen = false;
     },
-    openImageModal(imageSrc) {
-        this.modalImageSrc = imageSrc;
+    // The modal carries the whole project, not just the screenshot, so the panel
+    // can show what the tile's clamped description had to cut off.
+    openImageModal(project) {
+        this.modalProject = project;
         this.imageModalOpen = true;
         // Prevent body scroll when modal is open
         document.body.style.overflow = 'hidden';
     },
     closeImageModal() {
         this.imageModalOpen = false;
-        this.modalImageSrc = '';
+        this.modalProject = null;
         // Re-enable body scroll
         document.body.style.overflow = '';
     }
