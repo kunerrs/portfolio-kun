@@ -1,0 +1,8 @@
+name = "portfolio-kun-chat"
+main = "index.js"
+compatibility_date = "2026-11-18"
+
+# Optional: the worker falls back to these same values in code.
+[vars]
+UPSTREAM = "https://portfolio-kun.onrender.com"
+ALLOWED_ORIGINS = "https://kunerrs.github.io,null"

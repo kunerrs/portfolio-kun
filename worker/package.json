@@ -1,0 +1,7 @@
+{
+  "name": "portfolio-kun-chat-proxy",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Edge proxy for the portfolio chat API"
+}

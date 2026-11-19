@@ -12,6 +12,11 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// The chat is reached through the Cloudflare Worker proxy in worker/, which
+// forwards the visitor IP in X-Forwarded-For. Trust that one hop so the rate
+// limiter keys on the visitor rather than on the proxy's egress IP.
+app.set('trust proxy', 1);
+
 // Initialize Cohere client
 const cohere = new CohereClient({
   token: process.env.COHERE_API_KEY,
