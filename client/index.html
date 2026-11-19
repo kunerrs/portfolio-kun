@@ -340,318 +340,263 @@
         </div>
     </section>
 
+
     <!-- Experience Section -->
     <section id="experience" class="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
         <div class="max-w-6xl mx-auto">
-            <h2 class="text-4xl font-bold mb-8 text-center">
+            <h2 class="text-4xl font-bold mb-4 text-center">
                 <span class="gradient-text">Experience</span>
             </h2>
+            <p class="text-center text-gray-600 dark:text-gray-400 mb-6 max-w-2xl mx-auto">
+                Six years across two tracks: web development, and the manufacturing floor in between.
+            </p>
 
-            <!-- Tabs -->
-            <div class="flex justify-center mb-12">
-                <div class="relative inline-flex gap-2 p-1 bg-gray-100 dark:bg-gray-800 rounded-xl">
-                    <!-- Sliding background indicator -->
-                    <div class="absolute top-1 bottom-1 rounded-lg shadow-lg transition-all duration-300 ease-in-out"
-                         :class="experienceTab === 'professional' ? 'bg-gradient-to-r from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700' : 'bg-gradient-to-r from-purple-500 to-purple-600 dark:from-purple-600 dark:to-purple-700'"
-                         :style="`left: ${experienceTab === 'professional' ? '0.25rem' : '50%'}; width: calc(50% - 0.25rem);`"></div>
-
-                    <button @click="experienceTab = 'professional'"
-                            :class="experienceTab === 'professional' ? 'text-white' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'"
-                            class="relative tracking-wider z-10 w-32 py-2.5 rounded-lg text-xs font-semibold transition-colors duration-200 text-center uppercase">
-                        Web Dev
-                    </button>
-                    <button @click="experienceTab = 'other'"
-                            :class="experienceTab === 'other' ? 'text-white' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'"
-                            class="relative tracking-wider z-10 w-32 py-2.5 rounded-lg text-xs font-semibold transition-colors duration-200 text-center uppercase">
-                        Non-Web Dev
-                    </button>
-                </div>
+            <!-- Track legend (replaces the old tabs) -->
+            <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 mb-10 text-sm text-gray-600 dark:text-gray-400">
+                <span class="inline-flex items-center gap-2">
+                    <span class="timeline-legend-dot timeline-legend-dev" aria-hidden="true"></span>
+                    Development
+                </span>
+                <span class="inline-flex items-center gap-2">
+                    <span class="timeline-legend-dot timeline-legend-other" aria-hidden="true"></span>
+                    Other work
+                </span>
             </div>
 
-            <!-- Professional Experience Tab -->
-            <div x-show="experienceTab === 'professional'"
-                 x-transition:enter="transition ease-out duration-300"
-                 x-transition:enter-start="opacity-0 transform scale-95"
-                 x-transition:enter-end="opacity-100 transform scale-100"
-                 x-transition:leave="transition ease-in duration-200"
-                 x-transition:leave-start="opacity-100 transform scale-100"
-                 x-transition:leave-end="opacity-0 transform scale-95"
-                 class="space-y-8">
-                <!-- Job 1 -->
-                <div class="border-l-4 border-blue-600 pl-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200 rounded-r-lg">
-                    <h3 class="text-2xl font-semibold mb-2">Full Stack Web Developer</h3>
-                    <p class="text-blue-600 font-medium mb-1">
-                        PRO PCO
-                        <a href="https://apps.propco.services/propco/login" target="_blank" class="inline-flex items-center ml-2 text-sm text-gray-500 hover:text-blue-600">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                            </svg>
-                        </a>
-                    </p>
-                    <p class="text-gray-500 mb-4">May 2025 - Oct 2025 • 6 months Contract (Currently on call for maintenance)</p>
-                    <ul class="space-y-2 text-gray-700">
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            Worked on updating and maintaining the company's Content Management System (CMS)
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            Developed web applications using CodeIgniter framework and Bootstrap for responsive design
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            Updated the UI to a more modern look with Bootstrap and developed mobile view for technicians
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            Developed the Accounting Section (Invoicing and Billing) for office staff
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            Managed MySQL database operations and optimization
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            Fixed system issues and bugs to ensure smooth operations
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            Managed server deployment and maintenance operations
-                        </li>
-                    </ul>
-                </div>
+            <ol class="timeline">
+                <!-- PRO PCO -->
+                <li class="timeline-entry">
+                    <span class="timeline-node" aria-hidden="true"></span>
+                    <article class="timeline-card">
+                        <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+                            <div class="flex items-center gap-3">
+                                <span class="timeline-year font-mono">2025</span>
+                                <span class="timeline-track">Development</span>
+                            </div>
+                            <span class="timeline-dates">May 2025 &ndash; Oct 2025</span>
+                        </div>
 
-                <!-- Job 2 -->
-                <div class="border-l-4 border-blue-600 pl-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200 rounded-r-lg">
-                    <h3 class="text-2xl font-semibold mb-2">Web Developer</h3>
-                    <p class="text-blue-600 font-medium mb-1">
-                        eFlexervices Inc.
-                        <a href="https://aqqire.com" target="_blank" class="inline-flex items-center ml-2 text-sm text-gray-500 hover:text-blue-600">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                            </svg>
-                        </a>
-                    </p>
-                    <p class="text-gray-500 mb-4">Feb 2021 - Dec 2023</p>
-                    <ul class="space-y-2 text-gray-700">
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            Maintained the existing website and ensured consistency and maintainability of the codebase
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            Designed and developed RESTful APIs using Adonis JavaScript and Vue.js
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            Worked on the database of web applications using PostgreSQL, MySQL and MongoDB
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            Developed functions and triggers on PostgreSQL
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            Designed and developed front-end web applications with Vue 3 - Composition API
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            Designed overall design of the web applications with Tailwind CSS, Vuetify and Bootstrap
-                        </li>
-                    </ul>
-                </div>
+                        <h3 class="mt-3 text-xl sm:text-2xl font-semibold">Full Stack Web Developer</h3>
 
-                <!-- Job 3 -->
-                <div class="border-l-4 border-blue-600 pl-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200 rounded-r-lg">
-                    <h3 class="text-2xl font-semibold mb-2">Shopify Developer</h3>
-                    <p class="text-blue-600 font-medium mb-1">
-                        CTOAN Labs
-                        <span class="ml-2 text-sm text-gray-500">
-                            (customportrait.com - discontinued, couchskins.com)
-                        </span>
-                    </p>
-                    <p class="text-gray-500 mb-4">Dec 2020 - Feb 2021</p>
-                    <ul class="space-y-2 text-gray-700">
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            Enhanced and customized Shopify themes to align with brand aesthetics and improve user experience
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            Integrated third-party apps and plugins to extend functionality and optimize store operations
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            Developed custom Shopify apps using Shopify's Liquid templating language and the Shopify API
-                        </li>
-                    </ul>
-                </div>
-            </div>
+                        <p class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1.5">
+                            <span class="font-medium text-blue-600 dark:text-blue-400">PRO PCO</span>
+                            <span class="timeline-badge">
+                                <span class="timeline-pulse" aria-hidden="true"></span>
+                                On call
+                            </span>
+                            <a href="https://apps.propco.services/propco/login" target="_blank" rel="noopener"
+                               class="timeline-link" aria-label="Open the PRO PCO application">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                </svg>
+                            </a>
+                        </p>
+                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">6-month contract &middot; on call for maintenance</p>
 
-            <!-- Other Experience Tab -->
-            <div x-show="experienceTab === 'other'"
-                 x-transition:enter="transition ease-out duration-300"
-                 x-transition:enter-start="opacity-0 transform scale-95"
-                 x-transition:enter-end="opacity-100 transform scale-100"
-                 x-transition:leave="transition ease-in duration-200"
-                 x-transition:leave-start="opacity-100 transform scale-100"
-                 x-transition:leave-end="opacity-0 transform scale-95"
-                 class="space-y-8">
-                <!-- CNC Operator -->
-                <div class="border-l-4 border-purple-600 pl-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200 rounded-r-lg">
-                    <h3 class="text-2xl font-semibold mb-2">CNC Operator</h3>
-                    <p class="text-purple-600 font-medium mb-1">Orlick Industries</p>
-                    <p class="text-gray-500 mb-4">October 2024 - May 2025 • Hamilton, ON</p>
-                    <ul class="space-y-2 text-gray-700">
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            Operate and monitor CNC machines to perform precision manufacturing tasks
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            Inspect finished products to ensure they meet specifications using measurement tools
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            Maintain clean and organized workstations in compliance with safety standards
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            Collaborate with team members to optimize production efficiency
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            Set up machines, load raw materials, and input production instructions or blueprints
-                        </li>
-                    </ul>
-                </div>
+                        <ul class="timeline-highlights">
+                            <li>Worked on updating and maintaining the company's Content Management System (CMS)</li>
+                            <li>Developed web applications using CodeIgniter framework and Bootstrap for responsive design</li>
+                            <li>Updated the UI to a more modern look with Bootstrap and developed mobile view for technicians</li>
+                            <li x-show="expandedRoles.propco" x-cloak>Developed the Accounting Section (Invoicing and Billing) for office staff</li>
+                            <li x-show="expandedRoles.propco" x-cloak>Managed MySQL database operations and optimization</li>
+                            <li x-show="expandedRoles.propco" x-cloak>Fixed system issues and bugs to ensure smooth operations</li>
+                            <li x-show="expandedRoles.propco" x-cloak>Managed server deployment and maintenance operations</li>
+                        </ul>
 
-                <!-- Machine Operator -->
-                <div class="border-l-4 border-purple-600 pl-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200 rounded-r-lg">
-                    <h3 class="text-2xl font-semibold mb-2">Machine Operator</h3>
-                    <p class="text-purple-600 font-medium mb-1">Numesh Ontario Inc.</p>
-                    <p class="text-gray-500 mb-4">April 2024 - September 2024 • Brantford, ON</p>
-                    <ul class="space-y-2 text-gray-700">
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        <button type="button" class="timeline-more" @click="toggleRole('propco')" :aria-expanded="expandedRoles.propco ? 'true' : 'false'">
+                            <span x-text="expandedRoles.propco ? 'Show fewer' : 'Show 4 more'">Show 4 more</span>
+                            <svg class="w-3.5 h-3.5 transition-transform duration-200" :class="expandedRoles.propco ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                             </svg>
-                            Operated and monitored mesh manufacturing machines, ensuring consistent production quality and adherence to specifications
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            Set up, calibrated, and adjusted machines according to production requirements and material specifications
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            Conducted regular maintenance and troubleshooting of equipment to minimize downtime
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            Followed safety protocols and adhered to workplace safety regulations, including WHMIS standards
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            Maintained accurate production records and logs
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            Assisted in training new operators on machine operations, safety procedures, and quality standards
-                        </li>
-                    </ul>
-                </div>
+                        </button>
+                    </article>
+                </li>
 
-                <!-- Line Operator -->
-                <div class="border-l-4 border-purple-600 pl-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200 rounded-r-lg">
-                    <h3 class="text-2xl font-semibold mb-2">Line Operator/Packaging Operator</h3>
-                    <p class="text-purple-600 font-medium mb-1">Hunters Amenities International Ltd.</p>
-                    <p class="text-gray-500 mb-4">January 2024 - February 2024 • Burlington, ON</p>
-                    <ul class="space-y-2 text-gray-700">
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                <!-- Orlick Industries -->
+                <li class="timeline-entry timeline-entry--other">
+                    <span class="timeline-node" aria-hidden="true"></span>
+                    <article class="timeline-card">
+                        <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+                            <div class="flex items-center gap-3">
+                                <span class="timeline-year font-mono">2024</span>
+                                <span class="timeline-track">Other work</span>
+                            </div>
+                            <span class="timeline-dates">Oct 2024 &ndash; May 2025</span>
+                        </div>
+
+                        <h3 class="mt-3 text-xl sm:text-2xl font-semibold">CNC Operator</h3>
+
+                        <p class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1.5">
+                            <span class="font-medium text-purple-600 dark:text-purple-400">Orlick Industries</span>
+                            <span class="timeline-location">Hamilton, ON</span>
+                        </p>
+
+                        <ul class="timeline-highlights">
+                            <li>Operate and monitor CNC machines to perform precision manufacturing tasks</li>
+                            <li>Inspect finished products to ensure they meet specifications using measurement tools</li>
+                            <li x-show="expandedRoles.orlick" x-cloak>Maintain clean and organized workstations in compliance with safety standards</li>
+                            <li x-show="expandedRoles.orlick" x-cloak>Collaborate with team members to optimize production efficiency</li>
+                            <li x-show="expandedRoles.orlick" x-cloak>Set up machines, load raw materials, and input production instructions or blueprints</li>
+                        </ul>
+
+                        <button type="button" class="timeline-more" @click="toggleRole('orlick')" :aria-expanded="expandedRoles.orlick ? 'true' : 'false'">
+                            <span x-text="expandedRoles.orlick ? 'Show fewer' : 'Show 3 more'">Show 3 more</span>
+                            <svg class="w-3.5 h-3.5 transition-transform duration-200" :class="expandedRoles.orlick ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                             </svg>
-                            Operate and monitor production equipment on the manufacturing line
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </button>
+                    </article>
+                </li>
+
+                <!-- Numesh Ontario -->
+                <li class="timeline-entry timeline-entry--other">
+                    <span class="timeline-node" aria-hidden="true"></span>
+                    <article class="timeline-card">
+                        <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+                            <div class="flex items-center gap-3">
+                                <span class="timeline-year font-mono">2024</span>
+                                <span class="timeline-track">Other work</span>
+                            </div>
+                            <span class="timeline-dates">Apr 2024 &ndash; Sep 2024</span>
+                        </div>
+
+                        <h3 class="mt-3 text-xl sm:text-2xl font-semibold">Machine Operator</h3>
+
+                        <p class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1.5">
+                            <span class="font-medium text-purple-600 dark:text-purple-400">Numesh Ontario Inc.</span>
+                            <span class="timeline-location">Brantford, ON</span>
+                        </p>
+
+                        <ul class="timeline-highlights">
+                            <li>Operated and monitored mesh manufacturing machines, ensuring consistent production quality and adherence to specifications</li>
+                            <li>Set up, calibrated, and adjusted machines according to production requirements and material specifications</li>
+                            <li x-show="expandedRoles.numesh" x-cloak>Conducted regular maintenance and troubleshooting of equipment to minimize downtime</li>
+                            <li x-show="expandedRoles.numesh" x-cloak>Followed safety protocols and adhered to workplace safety regulations, including WHMIS standards</li>
+                            <li x-show="expandedRoles.numesh" x-cloak>Maintained accurate production records and logs</li>
+                            <li x-show="expandedRoles.numesh" x-cloak>Assisted in training new operators on machine operations, safety procedures, and quality standards</li>
+                        </ul>
+
+                        <button type="button" class="timeline-more" @click="toggleRole('numesh')" :aria-expanded="expandedRoles.numesh ? 'true' : 'false'">
+                            <span x-text="expandedRoles.numesh ? 'Show fewer' : 'Show 4 more'">Show 4 more</span>
+                            <svg class="w-3.5 h-3.5 transition-transform duration-200" :class="expandedRoles.numesh ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                             </svg>
-                            Follow standard operating procedures (SOPs) and safety guidelines
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </button>
+                    </article>
+                </li>
+
+                <!-- Hunters Amenities -->
+                <li class="timeline-entry timeline-entry--other">
+                    <span class="timeline-node" aria-hidden="true"></span>
+                    <article class="timeline-card">
+                        <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+                            <div class="flex items-center gap-3">
+                                <span class="timeline-year font-mono">2024</span>
+                                <span class="timeline-track">Other work</span>
+                            </div>
+                            <span class="timeline-dates">Jan 2024 &ndash; Feb 2024</span>
+                        </div>
+
+                        <h3 class="mt-3 text-xl sm:text-2xl font-semibold">Line Operator / Packaging Operator</h3>
+
+                        <p class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1.5">
+                            <span class="font-medium text-purple-600 dark:text-purple-400">Hunters Amenities International Ltd.</span>
+                            <span class="timeline-location">Burlington, ON</span>
+                        </p>
+
+                        <ul class="timeline-highlights">
+                            <li>Operate and monitor production equipment on the manufacturing line</li>
+                            <li>Follow standard operating procedures (SOPs) and safety guidelines</li>
+                            <li x-show="expandedRoles.hunters" x-cloak>Monitor production processes to maintain quality and efficiency standards</li>
+                            <li x-show="expandedRoles.hunters" x-cloak>Set up and adjust machinery to ensure proper functioning and production specifications</li>
+                            <li x-show="expandedRoles.hunters" x-cloak>Support continuous improvement initiatives to enhance efficiency and productivity</li>
+                        </ul>
+
+                        <button type="button" class="timeline-more" @click="toggleRole('hunters')" :aria-expanded="expandedRoles.hunters ? 'true' : 'false'">
+                            <span x-text="expandedRoles.hunters ? 'Show fewer' : 'Show 3 more'">Show 3 more</span>
+                            <svg class="w-3.5 h-3.5 transition-transform duration-200" :class="expandedRoles.hunters ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                             </svg>
-                            Monitor production processes to maintain quality and efficiency standards
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </button>
+                    </article>
+                </li>
+
+                <!-- eFlexervices -->
+                <li class="timeline-entry">
+                    <span class="timeline-node" aria-hidden="true"></span>
+                    <article class="timeline-card">
+                        <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+                            <div class="flex items-center gap-3">
+                                <span class="timeline-year font-mono">2021</span>
+                                <span class="timeline-track">Development</span>
+                            </div>
+                            <span class="timeline-dates">Feb 2021 &ndash; Dec 2023</span>
+                        </div>
+
+                        <h3 class="mt-3 text-xl sm:text-2xl font-semibold">Web Developer</h3>
+
+                        <p class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1.5">
+                            <span class="font-medium text-blue-600 dark:text-blue-400">eFlexervices Inc.</span>
+                            <a href="https://aqqire.com" target="_blank" rel="noopener"
+                               class="timeline-link" aria-label="Open aqqire.com">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                </svg>
+                            </a>
+                        </p>
+
+                        <ul class="timeline-highlights">
+                            <li>Maintained the existing website and ensured consistency and maintainability of the codebase</li>
+                            <li>Designed and developed RESTful APIs using Adonis JavaScript and Vue.js</li>
+                            <li x-show="expandedRoles.eflex" x-cloak>Worked on the database of web applications using PostgreSQL, MySQL and MongoDB</li>
+                            <li x-show="expandedRoles.eflex" x-cloak>Developed functions and triggers on PostgreSQL</li>
+                            <li x-show="expandedRoles.eflex" x-cloak>Designed and developed front-end web applications with Vue 3 - Composition API</li>
+                            <li x-show="expandedRoles.eflex" x-cloak>Designed overall design of the web applications with Tailwind CSS, Vuetify and Bootstrap</li>
+                        </ul>
+
+                        <button type="button" class="timeline-more" @click="toggleRole('eflex')" :aria-expanded="expandedRoles.eflex ? 'true' : 'false'">
+                            <span x-text="expandedRoles.eflex ? 'Show fewer' : 'Show 4 more'">Show 4 more</span>
+                            <svg class="w-3.5 h-3.5 transition-transform duration-200" :class="expandedRoles.eflex ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                             </svg>
-                            Set up and adjust machinery to ensure proper functioning and production specifications
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-2 text-purple-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </button>
+                    </article>
+                </li>
+
+                <!-- CTOAN Labs -->
+                <li class="timeline-entry">
+                    <span class="timeline-node" aria-hidden="true"></span>
+                    <article class="timeline-card">
+                        <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+                            <div class="flex items-center gap-3">
+                                <span class="timeline-year font-mono">2020</span>
+                                <span class="timeline-track">Development</span>
+                            </div>
+                            <span class="timeline-dates">Dec 2020 &ndash; Feb 2021</span>
+                        </div>
+
+                        <h3 class="mt-3 text-xl sm:text-2xl font-semibold">Shopify Developer</h3>
+
+                        <p class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1.5">
+                            <span class="font-medium text-blue-600 dark:text-blue-400">CTOAN Labs</span>
+                            <span class="timeline-location">customportrait.com (discontinued) &middot; couchskins.com</span>
+                        </p>
+
+                        <ul class="timeline-highlights">
+                            <li>Enhanced and customized Shopify themes to align with brand aesthetics and improve user experience</li>
+                            <li>Integrated third-party apps and plugins to extend functionality and optimize store operations</li>
+                            <li x-show="expandedRoles.ctoan" x-cloak>Developed custom Shopify apps using Shopify's Liquid templating language and the Shopify API</li>
+                        </ul>
+
+                        <button type="button" class="timeline-more" @click="toggleRole('ctoan')" :aria-expanded="expandedRoles.ctoan ? 'true' : 'false'">
+                            <span x-text="expandedRoles.ctoan ? 'Show fewer' : 'Show 1 more'">Show 1 more</span>
+                            <svg class="w-3.5 h-3.5 transition-transform duration-200" :class="expandedRoles.ctoan ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                             </svg>
-                            Support continuous improvement initiatives to enhance efficiency and productivity
-                        </li>
-                    </ul>
-                </div>
-            </div>
+                        </button>
+                    </article>
+                </li>
+            </ol>
         </div>
     </section>
 

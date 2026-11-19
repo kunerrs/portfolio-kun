@@ -17,7 +17,11 @@ window.portfolioData = {
     activeSection: 'about',
     mobileMenuOpen: false,
     chatOpen: false,
-    experienceTab: 'professional',
+    expandedRoles: {},
+
+    toggleRole(key) {
+        this.expandedRoles[key] = !this.expandedRoles[key];
+    },
     darkMode: false,
     currentProject: 0,
     isProjectActive: true,
