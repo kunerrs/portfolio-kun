@@ -543,6 +543,49 @@ body {
     background: #8b5cf6;
 }
 
+/* The dialog opens on a CSS animation, not an Alpine enter transition.
+
+   Alpine's transition helper forces a synchronous reflow before the frame that
+   makes the dialog visible (measured: ~210ms to first paint under 4x CPU
+   throttling, ~35ms with its enter attributes removed), so the open felt like
+   a stall followed by a slow 300ms fade. Animating opacity and transform from
+   CSS keeps the open on the compositor. The leave transition stays with Alpine
+   so the scrim can still fade out. */
+.image-modal {
+    animation: modal-scrim-in 160ms ease-out;
+}
+
+.image-modal-panel {
+    animation: modal-panel-in 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modal-scrim-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modal-panel-in {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .image-modal,
+    .image-modal-panel {
+        animation: none;
+    }
+}
+
 [x-cloak] {
     display: none !important;
 }
